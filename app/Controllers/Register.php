@@ -6,12 +6,12 @@ use App\Models\UserModel;
 use App\Models\AccountModel;
 use App\Models\RoleModel;
 
-class RegisterController extends BaseController
+class Register extends BaseController
 {
     public function index()
     {
         // Load the registration view
-        return view('register');
+        return view('welcome_message');
     }
 
     public function register()
@@ -35,7 +35,7 @@ class RegisterController extends BaseController
 
         if (!$validation->withRequest($this->request)->run()) {
             // Return errors
-            return view('register', ['errors' => $validation->getErrors()]);
+            //return view('register', ['errors' => $validation->getErrors()]);
         }
 
         // Get POST data
