@@ -23,7 +23,10 @@ class RegisterController extends BaseController
         $roleModel = new RoleModel();
 		
 		if (session()->has('user_id')) {
-			return "Already logged in";
+			return $this->response->setJSON([
+				'status' => 'error',
+				'message' => 'Already logged in'
+			]);
 			exit();
 		}
 
@@ -43,7 +46,10 @@ class RegisterController extends BaseController
         if (!$validation->withRequest($this->request)->run()) {
             // Return errors
             //return view('register', ['errors' => $validation->getErrors()]);
-			return "error";
+			return $this->response->setJSON([
+				'status' => 'error',
+				'message' => ['errors' => $validation->getErrors()]
+			]);
         }
 
         // Get POST data
@@ -81,14 +87,24 @@ class RegisterController extends BaseController
 
         if ($userId && $accountId && $roleId) {
 			
-			
+			session()->set([
+				'user_id' => $userId,
+				'email' => $data['email'],
+				'logged_in' => true
+			]);
 			
             //return redirect()->to('/success')->with('message', 'Registration successful');
-			return "Registration successful";
+			return $this->response->setJSON([
+				'status' => 'success',
+				'message' => 'Registration successful'
+			]);
 			
         }
 
         //return redirect()->back()->withInput()->with('error', 'Registration failed');
-		return "Registration failed";
+		return $this->response->setJSON([
+			'status' => 'error',
+			'message' => 'Registration failed'
+		]);
     }
 }

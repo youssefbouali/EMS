@@ -19,7 +19,10 @@ class LoginController extends Controller
     {
 		
 		if (session()->has('user_id')) {
-			return "Already logged in";
+			return $this->response->setJSON([
+				'status' => 'error',
+				'message' => 'Already logged in'
+			]);
 			exit();
 		}
         
@@ -39,13 +42,19 @@ class LoginController extends Controller
 
         if (!$user) {
             //return redirect()->back()->with('error', 'User not found.');
-			return "error";
+			return $this->response->setJSON([
+				'status' => 'error',
+				'message' => 'User not found'
+			]);
         }
 
         
         if (!password_verify($password, $user['password'])) {
             //return redirect()->back()->with('error', 'Mot de passe incorrect');
-			return "Mot de passe incorrect";
+			return $this->response->setJSON([
+				'status' => 'error',
+				'message' => 'Mot de passe incorrect'
+			]);
         }
 
         // Set session data (you can store more user data here)
@@ -57,7 +66,10 @@ class LoginController extends Controller
 
         
         //return redirect()->to('/users/Accueil');
-		return "Login successful";
+		return $this->response->setJSON([
+			'status' => 'success',
+			'message' => 'Login successful'
+		]);
     }
 
     
@@ -65,7 +77,10 @@ class LoginController extends Controller
     {
 		
 		if (!session()->has('user_id')) {
-			return "Session does not exist";
+			return $this->response->setJSON([
+				'status' => 'error',
+				'message' => 'Session does not exist'
+			]);
 			exit();
 		}
         
@@ -73,6 +88,9 @@ class LoginController extends Controller
 
        
         //return redirect()->to('/login');
-		return "Logout successful";
+		return $this->response->setJSON([
+			'status' => 'success',
+			'message' => 'Logout successful'
+		]);
     }
 }
