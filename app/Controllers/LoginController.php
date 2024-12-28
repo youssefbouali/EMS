@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\UserModel;
 use App\Models\AccountModel;
 use CodeIgniter\Controller;
 
@@ -12,12 +11,17 @@ class LoginController extends Controller
     // Show the login form
     public function loginForm()
     {
-        return view('login/form'); 
+        //return view('login/form'); 
     }
 
     // Handle user login
     public function login()
     {
+		
+		if (session()->has('user_id')) {
+			return "Already logged in";
+			exit();
+		}
         
         $accountModel = new AccountModel();
 
@@ -30,16 +34,18 @@ class LoginController extends Controller
             return redirect()->back()->with('erreur');
         }
 
-        /* Check if the user exists based on email (assuming email is unique)
-        $user = $userModel->where('email', $email)->first();
+        // Check if the user exists based on email (assuming email is unique)
+        $user = $accountModel->where('email', $email)->first();
 
         if (!$user) {
-            return redirect()->back()->with('error', 'User not found.');
-        }*/
+            //return redirect()->back()->with('error', 'User not found.');
+			return "error";
+        }
 
         
         if (!password_verify($password, $user['password'])) {
-            return redirect()->back()->with('error', 'Mot de passe incorrect');
+            //return redirect()->back()->with('error', 'Mot de passe incorrect');
+			return "Mot de passe incorrect";
         }
 
         // Set session data (you can store more user data here)
@@ -50,16 +56,23 @@ class LoginController extends Controller
         ]);
 
         
-        return redirect()->to('/users/Accueil'); 
+        //return redirect()->to('/users/Accueil');
+		return "Login successful";
     }
 
     
     public function logout()
     {
+		
+		if (!session()->has('user_id')) {
+			return "Session does not exist";
+			exit();
+		}
         
         session()->destroy();
 
        
-        return redirect()->to('/login');
+        //return redirect()->to('/login');
+		return "Logout successful";
     }
 }

@@ -21,6 +21,11 @@ class RegisterController extends BaseController
         $userModel = new UserModel();
         $accountModel = new AccountModel();
         $roleModel = new RoleModel();
+		
+		if (session()->has('user_id')) {
+			return "Already logged in";
+			exit();
+		}
 
         // Validate the request
         $validation = \Config\Services::validation();
@@ -75,9 +80,15 @@ class RegisterController extends BaseController
         ]);
 
         if ($userId && $accountId && $roleId) {
-            return redirect()->to('/success')->with('message', 'Registration successful');
+			
+			
+			
+            //return redirect()->to('/success')->with('message', 'Registration successful');
+			return "Registration successful";
+			
         }
 
-        return redirect()->back()->withInput()->with('error', 'Registration failed');
+        //return redirect()->back()->withInput()->with('error', 'Registration failed');
+		return "Registration failed";
     }
 }
