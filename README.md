@@ -66,3 +66,31 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - json (enabled by default - don't turn it off)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
+# Diagramme de Classe
+
+Voici le diagramme de classe de notre application :
+
+```mermaid
+classDiagram
+    class User {
+        +int id
+        +string nom
+        +string prenom
+        +iscription()
+    }
+
+    class Account {
+        +int id
+        +string email
+        +string password
+    }
+
+    class Role {
+        <<enumeration>>
+        +Etudiant
+        +Prof
+    }
+
+    User --> Account : "possède un"
+    User --> Role : "a un rôle"
