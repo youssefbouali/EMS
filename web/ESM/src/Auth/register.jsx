@@ -11,7 +11,7 @@ export default function Register() {
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
         <div className="bg-white p-4 rounded shadow-lg w-100" style={{ maxWidth: '400px' }}>
           <h2 className="text-center text-primary mb-4">Register</h2>
-          <form action="#" method="POST">
+          <form action="http://localhost:8080/users/register" method="POST">
             <div className="mb-3">
               <label htmlFor="nom" className="form-label">
                 First Name
@@ -71,7 +71,7 @@ export default function Register() {
                   type="checkbox"
                   id="student"
                   name="role"
-                  value="student"
+                  value="0"
                   className="form-check-input"
                 />
                 <label htmlFor="student" className="form-check-label">
@@ -83,7 +83,7 @@ export default function Register() {
                   type="checkbox"
                   id="professor"
                   name="role"
-                  value="professor"
+                  value="1"
                   className="form-check-input"
                 />
                 <label htmlFor="professor" className="form-check-label">
@@ -99,7 +99,7 @@ export default function Register() {
           </form>
           <p className="text-center mt-3 text-muted">
             Already have an account?{' '}
-            <a href="#" className="text-primary text-decoration-underline">
+            <a href="/login" className="text-primary text-decoration-underline">
               Sign In
             </a>
           </p>

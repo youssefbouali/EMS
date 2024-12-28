@@ -11,61 +11,73 @@ class RegisterController extends BaseController
     public function index()
     {
         // Load the registration view
-        //return view('welcome_message');
+        return view('welcome_message');
     }
 
     public function register()
     {
 		
 		// Load models
-        //$userModel = new UserModel();
-        //$accountModel = new AccountModel();
-        //$roleModel = new RoleModel();
+        $userModel = new UserModel();
+        $accountModel = new AccountModel();
+        $roleModel = new RoleModel();
 
         // Validate the request
         $validation = \Config\Services::validation();
         $validation->setRules([
-            'nom' => 'required|string|max_length[255]',
-            'prenom' => 'required|string|max_length[255]',
+            'nom' => 'required|string|max_length[191]',
+            'prenom' => 'required|string|max_length[191]',
             //'numEtudiant' => 'required|string|max_length[50]',
-            'email' => 'required|valid_email|max_length[255]',
+            'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
-            'etudiant' => 'required|in_list[0,1]',
-            'prof' => 'required|in_list[0,1]',
+			'role' => 'required|in_list[0,1]',
+            //'etudiant' => 'required|in_list[0,1]',
+            //'prof' => 'required|in_list[0,1]',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
             // Return errors
             //return view('register', ['errors' => $validation->getErrors()]);
+			return "error";
         }
 
         // Get POST data
         $data = $this->request->getPost();
-        return "6";
-//
-//        // Create the user
-//        $userId = $userModel->insert([
-//            'nom' => $data['nom'],
-//            'prenom' => $data['prenom'],
-//            //'numEtudiant' => $data['numEtudiant'],
-//        ]);
 
-//        // Create the account
-//        $accountId = $accountModel->insert([
-//            'email' => $data['email'],
-//            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-//        ]);
-//
-//        // Create the role
-//        $roleId = $roleModel->insert([
-//            'etudiant' => (bool)$data['etudiant'],
-//            'prof' => (bool)$data['prof'],
-//        ]);
-//
-//        if ($userId && $accountId && $roleId) {
-//            return redirect()->to('/success')->with('message', 'Registration successful');
-//        }
+        // Create the user
+        $userId = $userModel->insert([
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
+            //'numEtudiant' => $data['numEtudiant'],
+        ]);
 
-        //return redirect()->back()->withInput()->with('error', 'Registration failed');
+        // Create the account
+        $accountId = $accountModel->insert([
+            'idUser' => $userId,
+            'email' => $data['email'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+        ]);
+		
+		if($data['role'] == 0){
+			$data['prof'] = 0;
+			$data['etudiant'] = 1;
+			
+		} elseif($data['role'] == 1){
+			$data['prof'] = 1;
+			$data['etudiant'] = 0;
+		}
+
+        // Create the role
+        $roleId = $roleModel->insert([
+            'idAccount' => $accountId,
+            'etudiant' => $data['etudiant'],
+            'prof' => $data['prof'],
+        ]);
+
+        if ($userId && $accountId && $roleId) {
+            return redirect()->to('/success')->with('message', 'Registration successful');
+        }
+
+        return redirect()->back()->withInput()->with('error', 'Registration failed');
     }
 }

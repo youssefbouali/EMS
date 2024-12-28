@@ -17,15 +17,11 @@ class CreateUserTable extends Migration
             ],
             'nom' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 191,
             ],
             'prenom' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
-            ],
-            'numEtudiant' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 50,
+                'constraint' => 191,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

@@ -11,16 +11,26 @@ class RoleModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
 
-    protected $allowedFields = ['etudiant', 'prof'];
+    protected $allowedFields = ['idAccount', 'etudiant', 'prof'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'etudiant' => 'required|boolean',
-        'prof' => 'required|boolean',
+        'etudiant' => 'required|in_list[0,1]',
+        'prof' => 'required|in_list[0,1]',
     ];
-    protected $validationMessages = [];
-    protected $skipValidation = false;
+
+   
+    protected $validationMessages = [
+        'etudiant' => [
+            'required' => 'Le role est obligatoire.',
+        ],
+        'prof' => [
+            'required' => 'Le role est obligatoire.',
+        ],
+        
+    ];
+    //protected $skipValidation = false;
 }

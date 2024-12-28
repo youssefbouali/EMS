@@ -11,16 +11,26 @@ class AccountModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
 
-    protected $allowedFields = ['email', 'password'];
+    protected $allowedFields = ['idUser', 'email', 'password'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'email' => 'required|valid_email|max_length[255]',
+        'email' => 'required|valid_email|max_length[191]',
         'password' => 'required|string|min_length[8]',
     ];
-    protected $validationMessages = [];
-    protected $skipValidation = false;
+
+   
+    protected $validationMessages = [
+        'email' => [
+            'required' => 'L email est obligatoire.',
+            'min_length' => 'L email doit avoir au moins 6 caractères.',
+            'max_length' => 'L email ne doit pas dépasser 15 caractères.',
+        ],
+        
+    ];
+	
+    //protected $skipValidation = false;
 }
