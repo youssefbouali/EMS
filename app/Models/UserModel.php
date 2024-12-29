@@ -13,7 +13,7 @@ class UserModel extends Model
     protected $returnType = 'array';      
 
     
-    protected $allowedFields = ['nom', 'prenom','email', 'cne', 'cin', 'dateNaissance'];
+    protected $allowedFields = ['nom', 'prenom', 'cne', 'cin', 'dateNaissance'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
