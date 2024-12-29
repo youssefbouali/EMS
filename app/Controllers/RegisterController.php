@@ -39,6 +39,10 @@ class RegisterController extends BaseController
             'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
 			'role' => 'required|in_list[0,1]',
+			//'cne' => 'min_length[3]|max_length[20]',
+			//'cin' => 'min_length[3]|max_length[20]',
+			//'dateNaissance' => 'min_length[3]',
+			
             //'etudiant' => 'required|in_list[0,1]',
             //'prof' => 'required|in_list[0,1]',
         ]);
@@ -54,11 +58,24 @@ class RegisterController extends BaseController
 
         // Get POST data
         $data = $this->request->getPost();
+		
+		if (!isset($data['cne'])){
+			$data['cne'] = "";
+		}
+		if (!isset($data['cin'])){
+			$data['cin'] = "";
+		}
+		if (!isset($data['dateNaissance'])){
+			$data['dateNaissance'] = "";
+		}
 
         // Create the user
         $userId = $userModel->insert([
             'nom' => $data['nom'],
             'prenom' => $data['prenom'],
+			'cne' => $data['cne'],
+			'cin' => $data['cin'],
+			'dateNaissance' => $data['dateNaissance'],
             //'numEtudiant' => $data['numEtudiant'],
         ]);
 

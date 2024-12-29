@@ -11,7 +11,7 @@ export default function Register() {
       <div className="min-vh-100 d-flex align-items-center justify-content-center">
         <div className="bg-white p-4 rounded shadow-lg w-100" style={{ maxWidth: '400px' }}>
           <h2 className="text-center text-primary mb-4">Register</h2>
-          <form action="http://localhost:8080/users/login" method="POST">
+          <form action="http://localhost:8080/users/register" method="POST">
             <div className="mb-3">
               <label htmlFor="nom" className="form-label">
                 First Name

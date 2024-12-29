@@ -23,6 +23,18 @@ class CreateUserTable extends Migration
                 'type'       => 'VARCHAR',
                 'constraint' => 191,
             ],
+            'cne' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+            ],
+            'cin' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+            ],
+            'dateNaissance' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 191,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
