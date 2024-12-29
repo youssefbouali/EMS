@@ -16,77 +16,61 @@ class RegisterController extends BaseController
 
     public function register()
     {
-		
-		
-		header("Access-Control-Allow-Origin: *");
-		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-		header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-		if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-			header("HTTP/1.1 200 OK");
-			exit(0);
-		}
-		
-		// Load models
+        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+            header("HTTP/1.1 200 OK");
+            exit(0);
+        }
+
+        // Load models
         $userModel = new UserModel();
         $accountModel = new AccountModel();
         $roleModel = new RoleModel();
-		
-		if (session()->has('user_id')) {
-			return $this->response->setJSON([
-				'status' => 'error',
-				'message' => 'Already logged in'
-			]);
-			exit();
-		}
+
+        if (session()->has('user_id')) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Already logged in'
+            ]);
+        }
 
         // Validate the request
         $validation = \Config\Services::validation();
         $validation->setRules([
             'nom' => 'required|string|max_length[191]',
             'prenom' => 'required|string|max_length[191]',
-            //'numEtudiant' => 'required|string|max_length[50]',
             'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
-			'role' => 'required|in_list[0,1]',
-			//'cne' => 'min_length[3]|max_length[20]',
-			//'cin' => 'min_length[3]|max_length[20]',
-			//'dateNaissance' => 'min_length[3]',
-			
-            //'etudiant' => 'required|in_list[0,1]',
-            //'prof' => 'required|in_list[0,1]',
+            'role' => 'required|in_list[0,1]',
+            'cne' => 'min_length[3]|max_length[20]',
+            'cin' => 'min_length[3]|max_length[20]',
+            'dateNaissance' => 'min_length[3]',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
-            // Return errors
-            //return view('register', ['errors' => $validation->getErrors()]);
-			return $this->response->setJSON([
-				'status' => 'error',
-				'message' => ['errors' => $validation->getErrors()]
-			]);
+            // Return validation errors
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => ['errors' => $validation->getErrors()]
+            ]);
         }
 
         // Get POST data
         $data = $this->request->getPost();
-		
-		if (!isset($data['cne'])){
-			$data['cne'] = "";
-		}
-		if (!isset($data['cin'])){
-			$data['cin'] = "";
-		}
-		if (!isset($data['dateNaissance'])){
-			$data['dateNaissance'] = "";
-		}
+        $data['cne'] = $data['cne'] ?? "";
+        $data['cin'] = $data['cin'] ?? "";
+        $data['dateNaissance'] = $data['dateNaissance'] ?? "";
 
         // Create the user
         $userId = $userModel->insert([
             'nom' => $data['nom'],
             'prenom' => $data['prenom'],
-			'cne' => $data['cne'],
-			'cin' => $data['cin'],
-			'dateNaissance' => $data['dateNaissance'],
-            //'numEtudiant' => $data['numEtudiant'],
+            'cne' => $data['cne'],
+            'cin' => $data['cin'],
+            'dateNaissance' => $data['dateNaissance'],
         ]);
 
         // Create the account
@@ -95,15 +79,10 @@ class RegisterController extends BaseController
             'email' => $data['email'],
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
         ]);
-		
-		if($data['role'] == 0){
-			$data['prof'] = 0;
-			$data['etudiant'] = 1;
-			
-		} elseif($data['role'] == 1){
-			$data['prof'] = 1;
-			$data['etudiant'] = 0;
-		}
+
+        // Set role-related fields
+        $data['prof'] = $data['role'] == 1 ? 1 : 0;
+        $data['etudiant'] = $data['role'] == 0 ? 1 : 0;
 
         // Create the role
         $roleId = $roleModel->insert([
@@ -113,25 +92,21 @@ class RegisterController extends BaseController
         ]);
 
         if ($userId && $accountId && $roleId) {
-			
-			session()->set([
-				'user_id' => $userId,
-				'email' => $data['email'],
-				'logged_in' => true
-			]);
-			
-            //return redirect()->to('/success')->with('message', 'Registration successful');
-			return $this->response->setJSON([
-				'status' => 'success',
-				'message' => 'Registration successful'
-			]);
-			
+            session()->set([
+                'user_id' => $userId,
+                'email' => $data['email'],
+                'logged_in' => true
+            ]);
+            
+            return $this->response->setJSON([
+                'status' => 'success',
+                'message' => 'Registration successful'
+            ]);
         }
 
-        //return redirect()->back()->withInput()->with('error', 'Registration failed');
-		return $this->response->setJSON([
-			'status' => 'error',
-			'message' => 'Registration failed'
-		]);
+        return $this->response->setJSON([
+            'status' => 'error',
+            'message' => 'Registration failed'
+        ]);
     }
 }
