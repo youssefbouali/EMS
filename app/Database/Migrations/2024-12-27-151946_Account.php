@@ -15,14 +15,18 @@ class CreateAccountTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
+            'idUser' => [
+                'type'       => 'INT',
+                'constraint' => 11,
+            ],
             'email' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 191,
                 'unique'     => true,
             ],
             'password' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 191,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

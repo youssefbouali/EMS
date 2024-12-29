@@ -15,6 +15,10 @@ class CreateRoleTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
+            'idAccount' => [
+                'type'       => 'INT',
+                'constraint' => 11,
+            ],
             'etudiant' => [
                 'type'       => 'BOOLEAN',
                 'default'    => false,

@@ -7,17 +7,25 @@ use CodeIgniter\Model;
 class UserModel extends Model
 {
    
-    protected $table      = 'users';         
-    protected $primaryKey = 'id';             
+    protected $table      = 'user';         
+    protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
+    protected $returnType = 'array';      
 
     
-    protected $allowedFields = ['nom', 'prenom', 'email'];
+    protected $allowedFields = ['nom', 'prenom', 'cne', 'cin', 'dateNaissance'];
+
+    protected $useTimestamps = true;
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 
     
     protected $validationRules = [
         'nom' => 'required|min_length[3]|max_length[100]',
         'prenom' => 'required|min_length[3]|max_length[100]',
-        'email' => 'required|min_length[6]|max_length[15]'
+        //'cne' => 'min_length[3]|max_length[20]',
+		//'cin' => 'min_length[3]|max_length[20]',
+		//'dateNaissance' => 'min_length[3]',
         
     ];
 
@@ -32,12 +40,22 @@ class UserModel extends Model
             'required' => 'Le prénom est obligatoire',
             'min_length' => 'Le prénom doit avoir au moins 3 caractères',
             'max_length' => 'Le prénom ne doit pas dépasser 100 caractères'
+        ],/*
+        'cne' => [
+            'required' => 'Le cne est obligatoire',
+            'min_length' => 'Le cne doit avoir au moins 3 caractères',
+            'max_length' => 'Le cne ne doit pas dépasser 20 caractères'
         ],
-        'email' => [
-            'required' => 'L email est obligatoire.',
-            'min_length' => 'L email doit avoir au moins 6 caractères.',
-            'max_length' => 'L email ne doit pas dépasser 15 caractères.',
+        'cin' => [
+            'required' => 'Le cin est obligatoire',
+            'min_length' => 'Le cin doit avoir au moins 3 caractères',
+            'max_length' => 'Le cin ne doit pas dépasser 20 caractères'
         ],
+        'dateNaissance' => [
+            'required' => 'Le dateNaissance est obligatoire',
+            'min_length' => 'Le dateNaissance doit avoir au moins 3 caractères',
+            'max_length' => 'Le dateNaissance ne doit pas dépasser 20 caractères'
+        ],*/
         
     ];
 
