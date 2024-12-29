@@ -35,7 +35,13 @@ export default function Register() {
     try {
       const response = await axios.post(
         "http://localhost:8080/users/register",
-        formData
+			formData,
+		  {
+			headers: {
+			  "Content-Type": "application/json",
+			},
+			withCredentials: true,
+		  }
       );
 
       if (response.data.success) {
@@ -48,7 +54,7 @@ export default function Register() {
       setErrors(["An error occurred during registration"]);
     }
   };
-
+//onSubmit={handleSubmit}
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <div
@@ -56,7 +62,7 @@ export default function Register() {
         style={{ maxWidth: "400px" }}
       >
         <h2 className="text-center text-primary mb-4">Register</h2>
-        <form onSubmit={handleSubmit}>
+        <form action="http://localhost:8080/users/register" method="POST">
           <div className="row mb-3">
             <div className="col">
               <label htmlFor="nom" className="form-label">
@@ -125,7 +131,7 @@ export default function Register() {
             <div className="d-flex align-items-center">
               <div
                 className={`form-check role-option ${
-                  formData.role === "etudiant" ? "selected" : ""
+                  formData.role === "0" ? "selected" : ""
                 } me-3`}
               >
                 <input
@@ -133,7 +139,7 @@ export default function Register() {
                   id="student"
                   name="role"
                   value="0"
-                  checked={formData.role === "etudiant"}
+                  checked={formData.role === "0"}
                   onChange={handleChange}
                   className="form-check-input"
                 />
@@ -143,7 +149,7 @@ export default function Register() {
               </div>
               <div
                 className={`form-check role-option ${
-                  formData.role === "prof" ? "selected" : ""
+                  formData.role === "1" ? "selected" : ""
                 }`}
               >
                 <input
@@ -151,7 +157,7 @@ export default function Register() {
                   id="professor"
                   name="role"
                   value="1"
-                  checked={formData.role === "prof"}
+                  checked={formData.role === "1"}
                   onChange={handleChange}
                   className="form-check-input"
                 />
@@ -163,7 +169,7 @@ export default function Register() {
           </div>
 
           {/* Champs conditionnels */}
-          {formData.role === "etudiant" && (
+          {formData.role === "0" && (
             <>
               <div className="mb-3">
                 <label htmlFor="cne" className="form-label">
@@ -196,7 +202,7 @@ export default function Register() {
               </div>
             </>
           )}
-          {formData.role === "prof" && (
+          {formData.role === "1" && (
             <div className="mb-3">
               <label htmlFor="cin" className="form-label">
                 CIN
