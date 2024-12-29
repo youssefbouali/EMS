@@ -10,12 +10,12 @@ function LoginForm() {
     event.preventDefault();
     console.log("Email:", email, "Password:", password);
   };
-
+//onSubmit={handleSubmit}
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <div className="bg-white p-4 rounded shadow-lg w-100" style={{ maxWidth: "400px" }}>
         <h2 className="text-center text-primary mb-4">Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form action="http://localhost:8080/users/login" method="POST">
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email Address

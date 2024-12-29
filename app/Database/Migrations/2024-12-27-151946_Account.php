@@ -39,6 +39,8 @@ class CreateAccountTable extends Migration
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('account');
+		// Ajout de la clé étrangère pour la relation avec la table 'role'
+        $this->forge->addForeignKey('idUser', 'user', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
