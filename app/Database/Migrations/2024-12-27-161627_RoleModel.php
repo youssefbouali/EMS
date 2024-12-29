@@ -36,6 +36,7 @@ class CreateRoleTable extends Migration
                 'null' => true,
             ],
         ]);
+
         $this->forge->addKey('id', true);
         $this->forge->createTable('role');
 		// Ajout de la clé étrangère pour la relation avec la table 'role'
