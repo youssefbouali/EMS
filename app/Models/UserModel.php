@@ -13,7 +13,7 @@ class UserModel extends Model
     protected $returnType = 'array';      
 
     
-    protected $allowedFields = ['nom', 'prenom', 'cne', 'cin', 'dateNaissance'];
+    protected $allowedFields = ['nom', 'prenom','email', 'cne', 'cin', 'dateNaissance'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
@@ -23,11 +23,11 @@ class UserModel extends Model
     protected $validationRules = [
         'nom' => 'required|min_length[3]|max_length[100]',
         'prenom' => 'required|min_length[3]|max_length[100]',
-        //'cne' => 'min_length[3]|max_length[20]',
-		//'cin' => 'min_length[3]|max_length[20]',
-		//'dateNaissance' => 'min_length[3]',
-        
+        'cne' => 'permit_empty|min_length[3]|max_length[20]',
+        'cin' => 'permit_empty|min_length[3]|max_length[20]',
+        'dateNaissance' => 'permit_empty|min_length[3]',
     ];
+    
 
    
     protected $validationMessages = [
@@ -40,24 +40,20 @@ class UserModel extends Model
             'required' => 'Le prénom est obligatoire',
             'min_length' => 'Le prénom doit avoir au moins 3 caractères',
             'max_length' => 'Le prénom ne doit pas dépasser 100 caractères'
-        ],/*
+        ],
         'cne' => [
-            'required' => 'Le cne est obligatoire',
-            'min_length' => 'Le cne doit avoir au moins 3 caractères',
-            'max_length' => 'Le cne ne doit pas dépasser 20 caractères'
+            'min_length' => 'Le CNE doit avoir au moins 3 caractères',
+            'max_length' => 'Le CNE ne doit pas dépasser 20 caractères'
         ],
         'cin' => [
-            'required' => 'Le cin est obligatoire',
-            'min_length' => 'Le cin doit avoir au moins 3 caractères',
-            'max_length' => 'Le cin ne doit pas dépasser 20 caractères'
+            'min_length' => 'Le CIN doit avoir au moins 3 caractères',
+            'max_length' => 'Le CIN ne doit pas dépasser 20 caractères'
         ],
         'dateNaissance' => [
-            'required' => 'Le dateNaissance est obligatoire',
-            'min_length' => 'Le dateNaissance doit avoir au moins 3 caractères',
-            'max_length' => 'Le dateNaissance ne doit pas dépasser 20 caractères'
-        ],*/
-        
+            'min_length' => 'La date de naissance doit avoir au moins 3 caractères'
+        ]
     ];
+    
 
    
 }
