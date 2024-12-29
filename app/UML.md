@@ -8,7 +8,11 @@ classDiagram
         +int id
         +string nom
         +string prenom
-        +iscription()
+        +string role
+        +string cne
+        +string cni
+        +string dateNaissance
+        +inscription()
     }
 
     class Account {
@@ -18,10 +22,18 @@ classDiagram
     }
 
     class Role {
-        <<enumeration>>
         +Etudiant
         +Prof
     }
 
-    User --> Account : "possède un"
-    User --> Role : "a un rôle"
+    User --> Account : "possède un" 
+    Account --> Role : "a un rôle"
+    
+    %% Relation pour le rôle étudiant et professeur
+    User : +string cne (visible si rôle = "Etudiant")
+    User : +string cni (visible si rôle = "Prof")
+    User : +string dateNaissance (visible si rôle = "Etudiant")
+
+    %% Cardinalités
+    User "1" --> "1" Account : "possède un"
+    Account "1" --> "1" Role : "a un rôle"
