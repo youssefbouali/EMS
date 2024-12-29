@@ -17,20 +17,23 @@ class CreateUserTable extends Migration
             ],
             'nom' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 191,
             ],
             'prenom' => [
                 'type'       => 'VARCHAR',
-                'constraint' => 255,
+                'constraint' => 191,
             ],
-            // 'numEtudiant' => [
-            //     'type'       => 'VARCHAR',
-            //     'constraint' => 50,
-            // ],
-            'role_id' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
+            'cne' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+            ],
+            'cin' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+            ],
+            'dateNaissance' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 191,
             ],
             'created_at' => [
                 'type' => 'DATETIME',
@@ -41,20 +44,12 @@ class CreateUserTable extends Migration
                 'null' => true,
             ],
         ]);
-
-        // Ajout de la clé primaire
         $this->forge->addKey('id', true);
-
-        // Ajout de la clé étrangère pour la relation avec la table 'role'
-        $this->forge->addForeignKey('role_id', 'role', 'id', 'CASCADE', 'CASCADE');
-
-        // Création de la table
         $this->forge->createTable('user');
     }
 
     public function down()
     {
-        // Suppression de la table 'user'
         $this->forge->dropTable('user');
     }
 }
