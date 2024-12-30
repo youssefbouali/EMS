@@ -38,13 +38,20 @@ class LoginController extends Controller
         $accountModel = new AccountModel();
 
         
-        $email = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
+        $validation = \Config\Services::validation();
 
-        
-        if (empty($email) || empty($password)) {
-            return redirect()->back()->with('erreur');
-        }
+$validation->setRules([
+    'email' => 'required|valid_email',
+    'password' => 'required|min_length[6]'
+]);
+
+if (!$validation->withRequest($this->request)->run()) {
+    return $this->response->setJSON([
+        'status' => 'error',
+        'message' => $validation->getErrors()
+    ]);
+}
+
 
         // Check if the user exists based on email (assuming email is unique)
         $user = $accountModel->where('email', $email)->first();
