@@ -45,9 +45,9 @@ class RegisterController extends BaseController
             'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
             'role' => 'required|in_list[0,1]',
-            'cne' => 'min_length[3]|max_length[20]',
-            'cin' => 'min_length[3]|max_length[20]',
-            'dateNaissance' => 'min_length[3]',
+            'cne' => 'permit_empty|min_length[3]|max_length[20]',
+            'cin' => 'permit_empty|min_length[3]|max_length[20]',
+            'dateNaissance' => 'permit_empty|min_length[3]',
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
