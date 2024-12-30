@@ -84,7 +84,7 @@ export default function Register() {
         style={{ maxWidth: "400px" }}
       >
         <h2 className="text-center text-primary mb-4">Register</h2>
-        <form onSubmit={handleSubmit}>
+        <form action="http://localhost:8080/users/login" method="POST">
           <div className="row mb-3">
             <div className="col">
               <label htmlFor="nom" className="form-label">
