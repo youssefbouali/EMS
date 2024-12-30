@@ -7,7 +7,6 @@ Cette application est conçue pour faciliter la gestion des examens dans un envi
 - **Saisie des Notes** : Les enseignants peuvent enregistrer et modifier les notes des étudiants pour chaque examen.
 - **Réclamations** : Les étudiants peuvent soumettre des réclamations concernant leurs résultats d'examen pour révision.
 - **Consultation des Résultats** : Les étudiants peuvent consulter leurs notes et résultats finaux directement sur la plateforme.
-- **Gestion des Utilisateurs** : Administration centralisée pour la gestion des enseignants, étudiants et administrateurs.
 - **Sécurité et Authentification** : Accès sécurisé via des rôles et des permissions spécifiques.
 
 ## Technologies Utilisées
