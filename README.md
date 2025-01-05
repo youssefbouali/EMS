@@ -1,19 +1,21 @@
-# CodeIgniter 4 Application Starter
+# Application de Gestion des Examens
 
-## What is CodeIgniter?
+Cette application est conçue pour faciliter la gestion des examens dans un environnement académique. Elle offre des fonctionnalités essentielles permettant aux enseignants, étudiants et administrateurs de gérer efficacement le processus des examens.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Fonctionnalités Principales
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- **Saisie des Notes** : Les enseignants peuvent enregistrer et modifier les notes des étudiants pour chaque examen.
+- **Réclamations** : Les étudiants peuvent soumettre des réclamations concernant leurs résultats d'examen pour révision.
+- **Consultation des Résultats** : Les étudiants peuvent consulter leurs notes et résultats finaux directement sur la plateforme.
+- **Sécurité et Authentification** : Accès sécurisé via des rôles et des permissions spécifiques.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Technologies Utilisées
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- **Back-end** : Php avec codeigniter4
+- **Front-end** : React
+- **Base de Données** : MySQL
 
+HEAD
 ## Installation & updates
 
 `composer create-project codeigniter4/appstarter` then `composer update` whenever
@@ -94,3 +96,4 @@ classDiagram
 
     User --> Account : "possède un"
     User --> Role : "a un rôle"
+e3453189555336c55cc72cc6564294ab1765e588

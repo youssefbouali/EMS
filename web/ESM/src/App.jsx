@@ -1,7 +1,19 @@
-export default function App() {
+
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import LoginForm from './Auth/login';
+import Register from './Auth/register';
+
+function App() {
   return (
-    <div className="flex items-center justify-center h-screen bg-blue-500 text-white">
-      <h1 className="text-4xl font-bold">Hello TailwindCSS!</h1>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<LoginForm />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </Router>
   );
 }
+
+export default App;

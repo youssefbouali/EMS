@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateAccountTable extends Migration
+class CreateUserTable extends Migration
 {
     public function up()
     {
@@ -15,16 +15,23 @@ class CreateAccountTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'idUser' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-            ],
-            'email' => [
+            'nom' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 191,
-                'unique'     => true,
             ],
-            'password' => [
+            'prenom' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 191,
+            ],
+            'cne' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+            ],
+            'cin' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
+            ],
+            'dateNaissance' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 191,
             ],
@@ -38,13 +45,11 @@ class CreateAccountTable extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('account');
-		// Ajout de la clé étrangère pour la relation avec la table 'role'
-        $this->forge->addForeignKey('idUser', 'user', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('user');
     }
 
     public function down()
     {
-        $this->forge->dropTable('account');
+        $this->forge->dropTable('user');
     }
 }
