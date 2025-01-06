@@ -25,9 +25,9 @@ class AccountModel extends Model
    
     protected $validationMessages = [
         'email' => [
-            'required' => 'L email est obligatoire.',
-            'min_length' => 'L email doit avoir au moins 6 caractères.',
-            'max_length' => 'L email ne doit pas dépasser 15 caractères.',
+            'required' => 'L\'email est obligatoire.',
+            'min_length' => 'L\'email doit avoir au moins 6 caractères.',
+            'max_length' => 'L\'email ne doit pas dépasser 15 caractères.',
         ],
         
     ];

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { FaUser, FaEnvelope, FaLock, FaIdCard, FaCalendarAlt, FaSchool, FaChalkboardTeacher } from "react-icons/fa"; // Importation des icônes
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -28,20 +29,41 @@ export default function Register() {
     }));
   };
 
+  // Validation de base pour chaque champ
+  const validateForm = () => {
+    const newErrors = [];
+    if (!formData.nom) newErrors.push("Le nom est requis.");
+    if (!formData.prenom) newErrors.push("Le prénom est requis.");
+    if (!formData.email) newErrors.push("L'email est requis.");
+    if (!formData.password) newErrors.push("Le mot de passe est requis.");
+    if (formData.role === "") newErrors.push("Le rôle est requis.");
+    if (formData.role === "0" && !formData.cne) newErrors.push("Le CNE est requis pour les étudiants.");
+    if (formData.role === "1" && !formData.cin) newErrors.push("Le CIN est requis pour les professeurs.");
+    if (formData.role === "0" && !formData.dateNaissance) newErrors.push("La date de naissance est requise pour les étudiants.");
+    return newErrors;
+  };
+
   // Soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Valider le formulaire avant de l'envoyer
+    const validationErrors = validateForm();
+    if (validationErrors.length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       const response = await axios.post(
         "http://localhost:8080/users/register",
-			formData,
-		  {
-			headers: {
-			  "Content-Type": "application/json",
-			},
-			withCredentials: true,
-		  }
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
       );
 
       if (response.data.success) {
@@ -54,7 +76,7 @@ export default function Register() {
       setErrors(["An error occurred during registration"]);
     }
   };
-//onSubmit={handleSubmit}
+
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center">
       <div
@@ -66,33 +88,45 @@ export default function Register() {
           <div className="row mb-3">
             <div className="col">
               <label htmlFor="nom" className="form-label">
-                Last name
+               Last name
               </label>
-              <input
-                type="text"
-                id="nom"
-                name="nom"
-                className="form-control"
-                value={formData.nom}
-                onChange={handleChange}
-                placeholder="John"
-                required
-              />
+              <div className="position-relative">
+                <input
+                  type="text"
+                  id="nom"
+                  name="nom"
+                  className="form-control ps-5"
+                  value={formData.nom}
+                  onChange={handleChange}
+                  placeholder="John"
+                  required
+                />
+                <FaUser
+                  className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                  style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+                />
+              </div>
             </div>
             <div className="col">
               <label htmlFor="prenom" className="form-label">
-                First name
+               First name
               </label>
-              <input
-                type="text"
-                id="prenom"
-                name="prenom"
-                className="form-control"
-                value={formData.prenom}
-                onChange={handleChange}
-                placeholder="Doe"
-                required
-              />
+              <div className="position-relative">
+                <input
+                  type="text"
+                  id="prenom"
+                  name="prenom"
+                  className="form-control ps-5"
+                  value={formData.prenom}
+                  onChange={handleChange}
+                  placeholder="Doe"
+                  required
+                />
+                <FaUser
+                  className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                  style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+                />
+              </div>
             </div>
           </div>
 
@@ -100,32 +134,46 @@ export default function Register() {
             <label htmlFor="email" className="form-label">
               Email Address
             </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="form-control"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              required
-            />
+            <div className="position-relative">
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="form-control ps-5"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                required
+              />
+              <FaEnvelope
+                className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+              />
+            </div>
           </div>
+
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
-              Password
+               Password 
             </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="form-control"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="********"
-              required
-            />
+            <div className="position-relative">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                className="form-control ps-5"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="********"
+                required
+              />
+              <FaLock
+                className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+              />
+            </div>
           </div>
+
           <div className="mb-3">
             <p className="form-label mb-2">Role</p>
             <div className="d-flex align-items-center">
@@ -144,8 +192,8 @@ export default function Register() {
                   className="form-check-input"
                 />
                 <label htmlFor="student" className="form-check-label">
-                  Étudiant
-                </label>
+                   Étudiant
+                </label>   
               </div>
               <div
                 className={`form-check role-option ${
@@ -173,50 +221,69 @@ export default function Register() {
             <>
               <div className="mb-3">
                 <label htmlFor="cne" className="form-label">
-                  CNE
+                   CNE
                 </label>
-                <input
-                  type="text"
-                  id="cne"
-                  name="cne"
-                  className="form-control"
-                  value={formData.cne}
-                  onChange={handleChange}
-                  placeholder="CNE de l'étudiant"
-                  required
-                />
+                <div className="position-relative">
+                  <input
+                    type="text"
+                    id="cne"
+                    name="cne"
+                    className="form-control ps-5"
+                    value={formData.cne}
+                    onChange={handleChange}
+                    placeholder="CNE de l'étudiant"
+                    required
+                  />
+                  <FaIdCard
+                    className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                    style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+                  />
+                </div>
               </div>
               <div className="mb-3">
                 <label htmlFor="dateNaissance" className="form-label">
-                  Date de Naissance
+                   Date de Naissance
                 </label>
-                <input
-                  type="date"
-                  id="dateNaissance"
-                  name="dateNaissance"
-                  className="form-control"
-                  value={formData.dateNaissance}
-                  onChange={handleChange}
-                  required
-                />
+                <div className="position-relative">
+                  <input
+                    type="date"
+                    id="dateNaissance"
+                    name="dateNaissance"
+                    className="form-control ps-5"
+                    value={formData.dateNaissance}
+                    onChange={handleChange}
+                    required
+                  />
+                  <FaCalendarAlt
+                    className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                    style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+                  />
+                </div>
               </div>
             </>
           )}
+
           {formData.role === "1" && (
             <div className="mb-3">
               <label htmlFor="cin" className="form-label">
-                CIN
+                 CIN
               </label>
-              <input
-                type="text"
-                id="cin"
-                name="cin"
-                className="form-control"
-                value={formData.cin}
-                onChange={handleChange}
-                placeholder="CIN du professeur"
-                required
-              />
+              <div className="position-relative">
+                <input
+                  type="text"
+                  id="cin"
+                  name="cin"
+                  className="form-control ps-5"
+                  value={formData.cin}
+                  onChange={handleChange}
+                  placeholder="CIN du professeur"
+                  required
+                />
+                <FaIdCard
+                  className="position-absolute top-50 start-0 translate-middle-y ms-3"
+                  style={{ fontSize: "1.2rem" }} // Ajustez la taille de l'icône
+                />
+              </div>
             </div>
           )}
 
