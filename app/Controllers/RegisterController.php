@@ -8,7 +8,7 @@ use App\Models\RoleModel;
 
 class RegisterController extends BaseController
 {
-    public function index()
+    public function RegisterForm()
     {
         // Load the registration view
         return view('register');
@@ -36,6 +36,10 @@ class RegisterController extends BaseController
         //         'message' => 'Already logged in'
         //     ]);
         // }
+        
+        if (session()->has('user_id')) {
+            return redirect()->to('/');
+        }
 
         // Validate the request
         $validation = \Config\Services::validation();
@@ -44,6 +48,7 @@ class RegisterController extends BaseController
             'prenom' => 'required|string|max_length[191]',
             'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
+            'confirmPassword' => 'required|min_length[8]|matches[password]',
             'role' => 'required|in_list[0,1]',
             'cne' => 'permit_empty|min_length[3]|max_length[20]',
             'cin' => 'permit_empty|min_length[3]|max_length[20]',
@@ -52,10 +57,11 @@ class RegisterController extends BaseController
 
         if (!$validation->withRequest($this->request)->run()) {
             // Return validation errors
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => ['errors' => $validation->getErrors()]
-            ]);
+            // return $this->response->setJSON([
+                // 'status' => 'error',
+                // 'message' => ['errors' => $validation->getErrors()]
+            // ]);
+			return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 
         // Get POST data
@@ -98,7 +104,7 @@ class RegisterController extends BaseController
                'logged_in' => true
            ]);
            // Redirection vers la page de connexion en cas de succès
-           return redirect()->to('/users/login');
+           return redirect()->to('/login')->with('success', 'Registration successful! Please log in.');
        } else {
            // Rester sur la même page avec un message d'erreur
            return redirect()->back()->with('error', 'Registration failed')->withInput();
