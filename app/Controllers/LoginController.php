@@ -11,7 +11,7 @@ class LoginController extends Controller
     // Show the login form
     public function loginForm()
     {
-        //return view('login/form'); 
+        return view('login');
     }
 
     // Handle user login
@@ -26,13 +26,13 @@ class LoginController extends Controller
             exit(0);
         }
         
-        if (session()->has('user_id')) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Already logged in'
-            ]);
-            exit();
-        }
+        // if (session()->has('user_id')) {
+        //     return $this->response->setJSON([
+        //         'status' => 'error',
+        //         'message' => 'Already logged in'
+        //     ]);
+        //     exit();
+        // }
         
         $accountModel = new AccountModel();
 

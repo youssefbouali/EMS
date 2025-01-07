@@ -11,7 +11,7 @@ class RegisterController extends BaseController
     public function index()
     {
         // Load the registration view
-        return view('welcome_message');
+        return view('register');
     }
 
     public function register()
@@ -30,12 +30,12 @@ class RegisterController extends BaseController
         $accountModel = new AccountModel();
         $roleModel = new RoleModel();
 
-        if (session()->has('user_id')) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Already logged in'
-            ]);
-        }
+        // if (session()->has('user_id')) {
+        //     return $this->response->setJSON([
+        //         'status' => 'error',
+        //         'message' => 'Already logged in'
+        //     ]);
+        // }
 
         // Validate the request
         $validation = \Config\Services::validation();
@@ -91,22 +91,19 @@ class RegisterController extends BaseController
             'prof' => $data['prof'],
         ]);
 
-        if ($userId && $accountId && $roleId) {
-            session()->set([
-                'user_id' => $userId,
-                'email' => $data['email'],
-                'logged_in' => true
-            ]);
-            
-            return $this->response->setJSON([
-                'status' => 'success',
-                'message' => 'Registration successful'
-            ]);
-        }
+       if ($userId && $accountId && $roleId) {
+           session()->set([
+               'user_id' => $userId,
+               'email' => $data['email'],
+               'logged_in' => true
+           ]);
+           // Redirection vers la page de connexion en cas de succès
+           return redirect()->to('/users/login');
+       } else {
+           // Rester sur la même page avec un message d'erreur
+           return redirect()->back()->with('error', 'Registration failed')->withInput();
+       }
 
-        return $this->response->setJSON([
-            'status' => 'error',
-            'message' => 'Registration failed'
-        ]);
+
     }
 }

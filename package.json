@@ -1,7 +1,21 @@
 {
   "devDependencies": {
     "tailwindcss": "^3.4.17"
+  },
+  "name": "gestion_examen",
+  "version": "1.0.0",
+  "description": "Cette application est conçue pour faciliter la gestion des examens dans un environnement académique. Elle offre des fonctionnalités essentielles permettant aux enseignants, étudiants et administrateurs de gérer efficacement le processus des examens.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.3.3"
   }
-
-  
 }

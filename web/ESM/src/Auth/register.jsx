@@ -63,12 +63,14 @@ export default function Register() {
             "Content-Type": "application/json",
           },
           withCredentials: true,
+          credentials: 'include',
+          
         }
       );
 
       if (response.data.success) {
         setMessage("Registration successful");
-        navigate("/success");
+        navigate("/");
       } else {
         setErrors(response.data.errors || ["Registration failed"]);
       }
