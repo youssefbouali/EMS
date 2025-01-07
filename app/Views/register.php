@@ -1,8 +1,15 @@
 <?php
-// Initialisation des erreurs
+// Initialisation des erreurs et des variables
 $errors = [];
-$role = ''; // Définir la variable $role par défaut
-$dob = '';  // Date de naissance pour les étudiants
+$role = ''; // Initialisation de la variable $role
+$dob = '';  // Initialisation de la date de naissance pour les étudiants
+$cne = '';  // Initialisation du CNE
+$cin = '';  // Initialisation du CIN
+$nom = '';
+$prenom = '';
+$email = '';
+$password = '';
+$confirmPassword = '';
 
 // Vérification si le formulaire a été soumis via POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -12,46 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     $confirmPassword = $_POST['confirmPassword'] ?? '';
-    $role = $_POST['role'] ?? ''; // Vérifier la valeur du rôle
+    $role = $_POST['role'] ?? '';
     $cne = $_POST['cne'] ?? '';
     $cin = $_POST['cin'] ?? '';
-    $dob = $_POST['dob'] ?? ''; // Récupérer la date de naissance pour les étudiants
-
-    // Validation des champs
-    if (empty($nom)) {
-        $errors[] = "Le nom est requis.";
-    }
-    if (empty($prenom)) {
-        $errors[] = "Le prénom est requis.";
-    }
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = "L'email est invalide.";
-    } elseif (!str_contains($email, '@gmail.com')) {
-        $errors[] = "L'email doit contenir '@gmail.com'.";
-    }
-    if (empty($password)) {
-        $errors[] = "Le mot de passe est requis.";
-    } elseif (strlen($password) < 8 || !preg_match('/[0-9]/', $password) || !preg_match('/[a-zA-Z]/', $password)) {
-        $errors[] = "Le mot de passe doit contenir au moins 8 caractères, une lettre et un chiffre.";
-    }
-    if ($password !== $confirmPassword) {
-        $errors[] = "Les mots de passe ne correspondent pas.";
-    }
-    if (empty($role)) {
-        $errors[] = "Le rôle est requis.";
-    }
-
-    // Si le rôle est étudiant, vérifier la date de naissance
-    if ($role == '0' && empty($dob)) {
-        $errors[] = "La date de naissance est requise pour un étudiant.";
-    }
-
-    // Si pas d'erreurs, traiter l'enregistrement
-    if (empty($errors)) {
-        // Exemple d'enregistrement dans la base de données (à ajouter ici)
-        echo '<div style="color: green;">Inscription réussie !</div>';
-        // Ajouter ici le code pour enregistrer dans la base de données.
-    }
+    $dob = $_POST['dob'] ?? '';
 }
 ?>
 
@@ -62,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMS Gestion des Examens - Inscription</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Bootstrap CSS from local directory -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -86,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body>
-
     <div class="card">
         <h2 class="text-center">Inscription</h2>
 
@@ -102,33 +73,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <!-- Formulaire d'inscription -->
-        <form action="register.php" method="POST">
-            <div class="form-group">
+        <form action="/users/register" method="POST">
+            <div class="form-group mb-3">
                 <label for="nom">Nom</label>
-                <input type="text" class="form-control" id="nom" name="nom" value="<?php echo htmlspecialchars($nom ?? ''); ?>" required>
+                <input type="text" class="form-control" id="nom" name="nom"
+                       value="<?php echo htmlspecialchars($nom ?? ''); ?>"
+                       placeholder="Doe" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="prenom">Prénom</label>
-                <input type="text" class="form-control" id="prenom" name="prenom" value="<?php echo htmlspecialchars($prenom ?? ''); ?>" required>
+                <input type="text" class="form-control" id="prenom" name="prenom"
+                       value="<?php echo htmlspecialchars($prenom ?? ''); ?>"
+                       placeholder="John" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($email ?? ''); ?>" required>
+                <input type="email" class="form-control" id="email" name="email"
+                       value="<?php echo htmlspecialchars($email ?? ''); ?>"
+                       placeholder="you@domain.com" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="password">Mot de passe</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <input type="password" class="form-control" id="password" name="password"
+                       placeholder="********" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="confirmPassword">Confirmer le mot de passe</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                       placeholder="********" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="role">Rôle</label><br>
                 <label>
                     <input type="radio" name="role" value="0" <?php echo ($role == '0') ? 'checked' : ''; ?>> Étudiant
@@ -138,36 +117,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </label>
             </div>
 
-            <!-- Champs spécifiques aux étudiants -->
             <div id="student-fields" class="<?php echo $role == '0' ? '' : 'd-none'; ?>">
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="cne">CNE</label>
-                    <input type="text" class="form-control" id="cne" name="cne" value="<?php echo htmlspecialchars($cne ?? ''); ?>">
+                    <input type="text" class="form-control" id="cne" name="cne"
+                           value="<?php echo htmlspecialchars($cne ?? ''); ?>"
+                           placeholder="CNE">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="dob">Date de naissance</label>
-                    <input type="date" class="form-control" id="dob" name="dob" value="<?php echo htmlspecialchars($dob ?? ''); ?>">
+                    <input type="date" class="form-control" id="dob" name="dob"
+                           value="<?php echo htmlspecialchars($dob ?? ''); ?>"
+                           placeholder="01/01/2000">
                 </div>
             </div>
 
-            <!-- Champs spécifiques aux professeurs -->
             <div id="professor-fields" class="<?php echo $role == '1' ? '' : 'd-none'; ?>">
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <label for="cin">CIN</label>
-                    <input type="text" class="form-control" id="cin" name="cin" value="<?php echo htmlspecialchars($cin ?? ''); ?>">
+                    <input type="text" class="form-control" id="cin" name="cin"
+                           value="<?php echo htmlspecialchars($cin ?? ''); ?>"
+                           placeholder="CIN">
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-primary btn-block">S'inscrire</button>
+            <button type="submit" class="btn btn-primary w-100 mb-3">S'inscrire</button>
         </form>
 
         <div class="footer-text">
-            <p>Vous avez déjà un compte? <a href="login.php">Connectez-vous ici</a></p>
+            <p>Vous avez déjà un compte? <a href="/users/login">Connectez-vous ici</a></p>
         </div>
     </div>
 
+    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Script pour afficher les champs spécifiques selon le rôle
         document.querySelectorAll('input[name="role"]').forEach(input => {
             input.addEventListener('change', () => {
                 if (input.value === '0') {
@@ -182,5 +164,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </script>
 
 </body>
-
 </html>
