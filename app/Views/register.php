@@ -1,31 +1,3 @@
-<?php
-// Initialisation des erreurs et des variables
-$errors = [];
-$role = ''; // Initialisation de la variable $role
-$dob = '';  // Initialisation de la date de naissance pour les étudiants
-$cne = '';  // Initialisation du CNE
-$cin = '';  // Initialisation du CIN
-$nom = '';
-$prenom = '';
-$email = '';
-$password = '';
-$confirmPassword = '';
-
-// Vérification si le formulaire a été soumis via POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupérer les valeurs du formulaire
-    $nom = $_POST['nom'] ?? '';
-    $prenom = $_POST['prenom'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-    $confirmPassword = $_POST['confirmPassword'] ?? '';
-    $role = $_POST['role'] ?? '';
-    $cne = $_POST['cne'] ?? '';
-    $cin = $_POST['cin'] ?? '';
-    $dob = $_POST['dob'] ?? '';
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -34,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMS Gestion des Examens - Inscription</title>
     <!-- Bootstrap CSS from local directory -->
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <style>
         body {
             background-color: #f8f9fa;
@@ -61,37 +33,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="card">
         <h2 class="text-center">Inscription</h2>
 
+    <!-- Display Success Messages -->
+    <?php if (session()->getFlashdata('success')): ?>
+        <div style="color: green;">
+            <p><?= esc(session()->getFlashdata('success')) ?></p>
+        </div>
+    <?php endif; ?>
+
         <!-- Affichage des erreurs -->
-        <?php if (!empty($errors)): ?>
+        <?php if (session()->getFlashdata('errors')): ?>
             <div class="alert alert-danger">
                 <ul>
-                    <?php foreach ($errors as $error): ?>
-                        <li><?php echo htmlspecialchars($error); ?></li>
+                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                        <li><?php echo($error) ?></li>
                     <?php endforeach; ?>
                 </ul>
             </div>
         <?php endif; ?>
 
         <!-- Formulaire d'inscription -->
-        <form action="/users/register" method="POST">
+        <form action="/register" method="POST">
             <div class="form-group mb-3">
                 <label for="nom">Nom</label>
                 <input type="text" class="form-control" id="nom" name="nom"
-                       value="<?php echo htmlspecialchars($nom ?? ''); ?>"
+                       value="<?= old('nom') ?>"
                        placeholder="Doe" required>
             </div>
 
             <div class="form-group mb-3">
                 <label for="prenom">Prénom</label>
                 <input type="text" class="form-control" id="prenom" name="prenom"
-                       value="<?php echo htmlspecialchars($prenom ?? ''); ?>"
+                       value="<?= old('prenom') ?>"
                        placeholder="John" required>
             </div>
 
             <div class="form-group mb-3">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" id="email" name="email"
-                       value="<?php echo htmlspecialchars($email ?? ''); ?>"
+                       value="<?= old('email') ?>"
                        placeholder="you@domain.com" required>
             </div>
 
@@ -110,33 +89,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group mb-3">
                 <label for="role">Rôle</label><br>
                 <label>
-                    <input type="radio" name="role" value="0" <?php echo ($role == '0') ? 'checked' : ''; ?>> Étudiant
+                    <input type="radio" name="role" value="0" <?php echo (old('role') == '0') ? 'checked' : ''; ?>> Étudiant
                 </label>
                 <label class="ml-3">
-                    <input type="radio" name="role" value="1" <?php echo ($role == '1') ? 'checked' : ''; ?>> Professeur
+                    <input type="radio" name="role" value="1" <?php echo (old('role') == '1') ? 'checked' : ''; ?>> Professeur
                 </label>
             </div>
 
-            <div id="student-fields" class="<?php echo $role == '0' ? '' : 'd-none'; ?>">
+            <div id="student-fields" class="<?php echo old('role') == '0' ? '' : 'd-none'; ?>">
                 <div class="form-group mb-3">
                     <label for="cne">CNE</label>
                     <input type="text" class="form-control" id="cne" name="cne"
-                           value="<?php echo htmlspecialchars($cne ?? ''); ?>"
+                           value="<?= old('cne') ?>"
                            placeholder="CNE">
                 </div>
                 <div class="form-group mb-3">
                     <label for="dob">Date de naissance</label>
-                    <input type="date" class="form-control" id="dob" name="dob"
-                           value="<?php echo htmlspecialchars($dob ?? ''); ?>"
+                    <input type="date" class="form-control" id="dob" name="dateNaissance"
+                           value="<?= old('dateNaissance') ?>"
                            placeholder="01/01/2000">
                 </div>
             </div>
 
-            <div id="professor-fields" class="<?php echo $role == '1' ? '' : 'd-none'; ?>">
+            <div id="professor-fields" class="<?php echo old('role') == '1' ? '' : 'd-none'; ?>">
                 <div class="form-group mb-3">
                     <label for="cin">CIN</label>
                     <input type="text" class="form-control" id="cin" name="cin"
-                           value="<?php echo htmlspecialchars($cin ?? ''); ?>"
+                           value="<?= old('cin') ?>"
                            placeholder="CIN">
                 </div>
             </div>
@@ -144,11 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div class="footer-text">
-            <p>Vous avez déjà un compte? <a href="/users/login">Connectez-vous ici</a></p>
+            <p>Vous avez déjà un compte? <a href="/login">Connectez-vous ici</a></p>
         </div>
     </div>
 
-    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('input[name="role"]').forEach(input => {
             input.addEventListener('change', () => {
