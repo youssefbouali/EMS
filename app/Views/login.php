@@ -6,11 +6,13 @@
     <title>EMS Gestion des examens - Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <!-- Bootstrap CSS from local directory -->
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 
-    <link href="assets/css/app.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css">
 
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -20,10 +22,28 @@
                 <div class="card overflow-hidden sm:rounded-md rounded-none">
                     <div class="p-6">
                         <h2 class="text-center text-primary mb-4">Login</h2>
-                        <form method="post" action="/users/login">
+
+					<!-- Display Success Messages -->
+					<?php if (session()->getFlashdata('success')): ?>
+						<div style="color: green;">
+							<p><?= esc(session()->getFlashdata('success')) ?></p>
+						</div>
+					<?php endif; ?>
+
+						<!-- Affichage des erreurs -->
+						<?php if (session()->getFlashdata('errors')): ?>
+							<div class="alert alert-danger">
+								<ul>
+									<?php foreach (session()->getFlashdata('errors') as $error): ?>
+										<li><?php echo($error) ?></li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
+                        <form method="post" action="/login">
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="LoggingEmailAddress">Email Address</label>
-                                <input id="LoggingEmailAddress" name="email" class="form-input" type="email" placeholder="Enter email" required>
+                                <input id="LoggingEmailAddress" name="email" class="form-input" type="email" placeholder="Enter email" value="<?= old('email') ?>" required>
                             </div>
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-600 dark:text-gray-200 mb-2" for="loggingPassword">Password</label>
