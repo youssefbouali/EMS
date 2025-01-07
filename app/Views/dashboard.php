@@ -4,29 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Inscription</title>
+    <title>EMS Gestion des Examens - Dashboard</title>
     <!-- Bootstrap CSS from local directory -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .card {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-
-        .footer-text {
-            text-align: center;
-            font-size: 0.9rem;
-        }
-    </style>
 </head>
 
 <body>
