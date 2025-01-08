@@ -49,7 +49,7 @@ class RegisterController extends BaseController
             'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
             'confirmPassword' => 'required|min_length[8]|matches[password]',
-            'role' => 'required|in_list[0,1]',
+            'role' => 'required|string',
             'cne' => 'permit_empty|min_length[3]|max_length[20]',
             'cin' => 'permit_empty|min_length[3]|max_length[20]',
             'dateNaissance' => 'permit_empty|min_length[3]',
@@ -86,15 +86,12 @@ class RegisterController extends BaseController
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
         ]);
 
-        // Set role-related fields
-        $data['prof'] = $data['role'] == 1 ? 1 : 0;
-        $data['etudiant'] = $data['role'] == 0 ? 1 : 0;
+        $role = $data['role'];
 
         // Create the role
         $roleId = $roleModel->insert([
             'idAccount' => $accountId,
-            'etudiant' => $data['etudiant'],
-            'prof' => $data['prof'],
+            'role_name' => $role,
         ]);
 
        if ($userId && $accountId && $roleId) {
