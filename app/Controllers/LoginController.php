@@ -11,7 +11,7 @@ class LoginController extends Controller
     // Show the login form
     public function loginForm()
     {
-        //return view('login/form'); 
+        return view('login');
     }
 
     // Handle user login
@@ -27,11 +27,7 @@ class LoginController extends Controller
         }
         
         if (session()->has('user_id')) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Already logged in'
-            ]);
-            exit();
+            return redirect()->to('/');
         }
         
         $accountModel = new AccountModel();
@@ -45,32 +41,35 @@ class LoginController extends Controller
 
         $validation->setRules([
             'email' => 'required|valid_email',
-            'password' => 'required|min_length[6]'
+            'password' => 'required'
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => $validation->getErrors()
-            ]);
+            // return $this->response->setJSON([
+                // 'status' => 'error',
+                // 'message' => $validation->getErrors()
+            // ]);
+			return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 
         // Check if the user exists based on email (assuming email is unique)
         $user = $accountModel->where('email', $email)->first();
 
         if (!$user) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'User not found'
-            ]);
+            // return $this->response->setJSON([
+                // 'status' => 'error',
+                // 'message' => 'User not found'
+            // ]);
+			return redirect()->back()->withInput()->with('errors', ['Invalid email.']);
         }
 
         // Verify password
         if (!password_verify($password, $user['password'])) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Mot de passe incorrect'
-            ]);
+            // return $this->response->setJSON([
+                // 'status' => 'error',
+                // 'message' => 'Mot de passe incorrect'
+            // ]);
+			return redirect()->back()->withInput()->with('errors', ['Invalid password.']);
         }
 
         // Set session data (you can store more user data here)
@@ -80,27 +79,26 @@ class LoginController extends Controller
             'logged_in' => true
         ]);
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Login successful'
-        ]);
+        // return $this->response->setJSON([
+            // 'status' => 'success',
+            // 'message' => 'Login successful'
+        // ]);
+		//return redirect()->to('/')->with('success', 'Login successful!');
+		return redirect()->to('/');
     }
 
     public function logout()
     {
-        if (!session()->has('user_id')) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Session does not exist'
-            ]);
-            exit();
-        }
+        if (session()->has('user_id')) {
         
-        session()->destroy();
+			session()->destroy();
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'message' => 'Logout successful'
-        ]);
+			// return $this->response->setJSON([
+				// 'status' => 'success',
+				// 'message' => 'Logout successful'
+			// ]);
+			return redirect()->to('/login')->with('success', 'You have been logged out.');
+            
+        }
     }
 }
