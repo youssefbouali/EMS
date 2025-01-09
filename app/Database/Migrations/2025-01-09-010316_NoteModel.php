@@ -24,15 +24,15 @@ class CreateNoteTable extends Migration
                 'constraint' => 100,
                 'null'       => true,
             ],
-            'IdModule' => [
+            'idModule' => [
                 'type'       => 'INT',
                 'constraint' => 11,
             ],
-            'IdUserProfessor' => [
+            'idUserProfessor' => [
                 'type'       => 'INT',
                 'constraint' => 11,
             ],
-            'IdUserStudent' => [
+            'idUserStudent' => [
                 'type'       => 'INT',
                 'constraint' => 11,
             ],
