@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\NoteModel;
+use App\Models\UserModuleModel;
 
 class NoteController extends BaseController
 {
@@ -25,6 +26,7 @@ class NoteController extends BaseController
 
         // Instantiate the NoteModel
         $noteModel = new NoteModel();
+        $UserModuleModel = new UserModuleModel();
 
         // Validate the request
         $validation = \Config\Services::validation();
@@ -37,17 +39,22 @@ class NoteController extends BaseController
 
         // Get POST data
         $data = $this->request->getPost();
+		
+        $usermodule = $UserModuleModel->where('idUser', session()->get('user_id'))->first();
+		
+		if($usermodule["typeRelation"] == "professor"){
 
-        // Insert the note
-        $noteId = $noteModel->insert([
-            'session' => $data['session'],
-            'description' => $data['description'] ?? null,
-            'noteNormal' => $data['noteNormal'],
-            'noteRattrapage' => $data['noteRattrapage'],
-            'IdModule' => $data['IdModule'],
-            'IdUserProfessor' => $data['IdUserProfessor'],
-            'IdUserStudent' => $data['IdUserStudent'],
-        ]);
+			// Insert the note
+			$noteId = $noteModel->insert([
+				'session' => $data['session'],
+				'description' => $data['description'] ?? null,
+				'noteNormal' => $data['noteNormal'],
+				'noteRattrapage' => $data['noteRattrapage'],
+				'IdModule' => $data['IdModule'],
+				'IdUserProfessor' => session()->get('user_id'),
+				'IdUserStudent' => $data['IdUserStudent'],
+			]);
+		}
 
         if ($noteId) {
             // Redirect with success message
