@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AccountModel;
+use App\Models\RoleModel;
 use CodeIgniter\Controller;
 
 class LoginController extends Controller
@@ -31,6 +32,7 @@ class LoginController extends Controller
         }
         
         $accountModel = new AccountModel();
+        $roleModel = new RoleModel();
 
         // recuperer les valeurs email et password
         $email = $this->request->getPost('email');
@@ -54,6 +56,7 @@ class LoginController extends Controller
 
         // Check if the user exists based on email (assuming email is unique)
         $user = $accountModel->where('email', $email)->first();
+        $role = $roleModel->where('idAccount', $user['id'])->first();
 
         if (!$user) {
             // return $this->response->setJSON([
@@ -76,6 +79,7 @@ class LoginController extends Controller
         session()->set([
             'user_id' => $user['id'],
             'email' => $user['email'],
+            'role' => $role['role_name'],
             'logged_in' => true
         ]);
 
