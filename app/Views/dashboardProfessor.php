@@ -15,7 +15,7 @@
             <a class="navbar-brand mb-4" href="#">EMS Dashboard</a>
             <ul class="navbar-nav flex-column w-100">
                 <li class="nav-item">
-                    <a class="nav-link" href="/dashboard">Dashboard</a>
+                    <a class="nav-link" href="/">Dashboard</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="gestionNotesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -62,7 +62,7 @@
             contentDiv.innerHTML = `
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <div class="col">
-                        <div class="card" onclick="changeContent('card1')">
+                        <div class="card" href="" onclick="changeContent('card1')">
                             <div class="card-body">
                                 <h5 class="card-title">Ingenierie logiciel</h5>
                                 <p class="card-text"></p>
@@ -92,7 +92,7 @@
         function changeContent(card) {
             const contentDiv = document.getElementById('content');
             if (card === 'card1') {
-                contentDiv.innerHTML = '<table><th>test<th></table>';
+                contentDiv.innerHTML = '<form action="/notes" method="post">Session: <select name="session" required><option value="normal">Normal</option><option value="rattrapage">Rattrapage</option></select> Note Normal: <input type="number" name="noteNormal" min="0" max="20" required> Note Rattrapage: <input type="number" name="noteRattrapage" min="0" max="20" required> ID Étudiant: <input type="text" name="IdUserStudent" required> <button type="submit">Ajouter les Notes</button></form>';
             } else if (card === 'card2') {
                 contentDiv.innerHTML = '<h2>Card 2 Details</h2><p>Details for the second card.</p>';
             } else if (card === 'card3') {
@@ -100,4 +100,5 @@
             }
         }
     </script>
+    
 </body>
