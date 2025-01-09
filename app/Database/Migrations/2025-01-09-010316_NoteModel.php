@@ -36,6 +36,14 @@ class CreateNoteTable extends Migration
                 'type'       => 'INT',
                 'constraint' => 11,
             ],
+            'noteNormal' => [
+                'type'       => 'DECIMAL',
+                'constraint' => '5,2',
+            ],
+            'noteRattrapage' => [
+                'type'       => 'DECIMAL',
+                'constraint' => '5,2',
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,

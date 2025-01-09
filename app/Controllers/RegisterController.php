@@ -98,6 +98,7 @@ class RegisterController extends BaseController
            session()->set([
                'user_id' => $userId,
                'email' => $data['email'],
+               'role' => $data['role'],
                'logged_in' => true
            ]);
            // Redirection vers la page de connexion en cas de succès

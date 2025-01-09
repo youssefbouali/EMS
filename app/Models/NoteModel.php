@@ -12,7 +12,7 @@ class NoteModel extends Model
     protected $returnType = 'array';
 
    
-    protected $allowedFields = ['session', 'description', 'value', 'IdModule', 'IdUserProfessor', 'IdUserStudent'];
+    protected $allowedFields = ['session', 'description', 'noteNormal', 'noteRattrapage', 'IdModule', 'IdUserProfessor', 'IdUserStudent'];
 
     
     protected $useTimestamps = true;
@@ -23,7 +23,8 @@ class NoteModel extends Model
     protected $validationRules = [
         'session' => 'required|string|min_length[3]|max_length[100]|in_list[normal,rattrapage]',
         'description' => 'permit_empty|string|max_length[191]',
-        'value' => 'required|numeric|greater_than_equal_to[0]|less_than_equal_to[20]',
+        'noteNormal' => 'required|numeric|greater_than_equal_to[0]|less_than_equal_to[20]',
+        'noteRattrapage' => 'required|numeric|greater_than_equal_to[0]|less_than_equal_to[20]',
     ];
 
     // Messages de validation personnalisés

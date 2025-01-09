@@ -11,7 +11,7 @@
 
 <body>
     <div class="card">
-        <h2 class="text-center">Welcome to The dashboard</h2>
+        <h2 class="text-center">Welcome to The dashboard Professor</h2>
 
     <!-- Display Success Messages -->
     <?php if (session()->getFlashdata('success')): ?>
