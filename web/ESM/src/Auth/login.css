@@ -1,0 +1,24 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f9fa;
+  }
+  .login-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+  .login-card h2 {
+    text-align: center;
+    color: #0d6efd;
+    margin-bottom: 20px;
+  }
+  .text-decoration-underline:hover {
+    text-decoration: underline !important;
+  }
