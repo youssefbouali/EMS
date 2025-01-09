@@ -49,7 +49,7 @@ class RegisterController extends BaseController
             'email' => 'required|valid_email|max_length[191]',
             'password' => 'required|min_length[8]',
             'confirmPassword' => 'required|min_length[8]|matches[password]',
-            'role' => 'required|string',
+            'role' => 'required|string|in_list[student,professor]',
             'cne' => 'permit_empty|min_length[3]|max_length[20]',
             'cin' => 'permit_empty|min_length[3]|max_length[20]',
             'dateNaissance' => 'permit_empty|min_length[3]',
