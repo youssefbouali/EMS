@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateModuleTable extends Migration
+class Modul extends Migration
 {
     public function up()
     {
@@ -36,11 +36,11 @@ class CreateModuleTable extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('module');
+        $this->forge->createTable('modul');
     }
 
     public function down()
     {
-        $this->forge->dropTable('module');
+        $this->forge->createTable('modul', true);
     }
 }
