@@ -11,7 +11,7 @@ class UserModuleModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
 
-    protected $allowedFields = ['idUser', 'idModule', 'typeRelation'];
+    protected $allowedFields = ['idUser', 'idModule', 'type'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
@@ -19,12 +19,12 @@ class UserModuleModel extends Model
 
     
     protected $validationRules = [
-        'typeRelation' => 'required|string|in_list[student,professor]',
+        'type' => 'required|string|in_list[student,professor]',
     ];
 
     // Messages de validation personnalisés
     protected $validationMessages = [
-        'typeRelation' => [
+        'type' => [
             'required' => 'Le nom de la filière est obligatoire.',
         ],
     ];
