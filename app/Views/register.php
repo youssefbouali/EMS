@@ -89,14 +89,15 @@
             <div class="form-group mb-3">
                 <label for="role">Rôle</label><br>
                 <label>
-                    <input type="radio" name="role" value="0" <?php echo (old('role') == '0') ? 'checked' : ''; ?>> Étudiant
+                    <input type="radio" name="role" value="student" <?php echo (old('role') == 'student') ? 'checked' : ''; ?>> Étudiant
                 </label>
                 <label class="ml-3">
-                    <input type="radio" name="role" value="1" <?php echo (old('role') == '1') ? 'checked' : ''; ?>> Professeur
+                    <input type="radio" name="role" value="professor" <?php echo (old('role') == 'professor') ? 'checked' : ''; ?>> Professeur
                 </label>
             </div>
 
-            <div id="student-fields" class="<?php echo old('role') == '0' ? '' : 'd-none'; ?>">
+
+            <div id="student-fields" class="<?php echo old('role') == 'student' ? '' : 'd-none'; ?>">
                 <div class="form-group mb-3">
                     <label for="cne">CNE</label>
                     <input type="text" class="form-control" id="cne" name="cne"
@@ -111,7 +112,7 @@
                 </div>
             </div>
 
-            <div id="professor-fields" class="<?php echo old('role') == '1' ? '' : 'd-none'; ?>">
+            <div id="professor-fields" class="<?php echo old('role') == 'professor' ? '' : 'd-none'; ?>">
                 <div class="form-group mb-3">
                     <label for="cin">CIN</label>
                     <input type="text" class="form-control" id="cin" name="cin"
@@ -131,7 +132,7 @@
     <script>
         document.querySelectorAll('input[name="role"]').forEach(input => {
             input.addEventListener('change', () => {
-                if (input.value === '0') {
+                if (input.value === 'student') {
                     document.getElementById('student-fields').classList.remove('d-none');
                     document.getElementById('professor-fields').classList.add('d-none');
                 } else {
