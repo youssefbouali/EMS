@@ -11,7 +11,7 @@ class UserModuleModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
 
-    protected $allowedFields = ['idUser', 'idModule', 'type'];
+    protected $allowedFields = ['idUser', 'idModule', 'typeRelation'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';

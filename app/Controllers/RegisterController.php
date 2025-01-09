@@ -43,17 +43,7 @@ class RegisterController extends BaseController
 
         // Validate the request
         $validation = \Config\Services::validation();
-        $validation->setRules([
-            'nom' => 'required|string|max_length[191]',
-            'prenom' => 'required|string|max_length[191]',
-            'email' => 'required|valid_email|max_length[191]',
-            'password' => 'required|min_length[8]',
-            'confirmPassword' => 'required|min_length[8]|matches[password]',
-            'role' => 'required|string|in_list[student,professor]',
-            'cne' => 'permit_empty|min_length[3]|max_length[20]',
-            'cin' => 'permit_empty|min_length[3]|max_length[20]',
-            'dateNaissance' => 'permit_empty|min_length[3]',
-        ]);
+        $validation->setRules($noteModel->getValidationRules());
 
         if (!$validation->withRequest($this->request)->run()) {
             // Return validation errors
