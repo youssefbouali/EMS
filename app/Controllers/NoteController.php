@@ -10,10 +10,10 @@ class NoteController extends BaseController
     public function noteForm()
     {
         // Load the note creation view
-        return view('note');
+        //return view('note');
     }
 
-    public function createNote()
+    public function Note()
     {
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
@@ -42,7 +42,7 @@ class NoteController extends BaseController
 		
         $usermodule = $UserModuleModel->where('idUser', session()->get('user_id'))->first();
 		
-		if($usermodule["typeRelation"] == "professor"){
+		//if($usermodule["type"] == "professor"){
 
 			// Insert the note
 			$noteId = $noteModel->insert([
@@ -50,15 +50,16 @@ class NoteController extends BaseController
 				'description' => $data['description'] ?? null,
 				'noteNormal' => $data['noteNormal'],
 				'noteRattrapage' => $data['noteRattrapage'],
-				'IdModule' => $data['IdModule'],
-				'IdUserProfessor' => session()->get('user_id'),
-				'IdUserStudent' => $data['IdUserStudent'],
+				'idModule' => $data['idModule'],
+				'idUserProfessor' => session()->get('user_id'),
+				'idUserStudent' => $data['idUserStudent'],
 			]);
-		}
+		//}
 
         if ($noteId) {
             // Redirect with success message
-            return redirect()->to('/notes')->with('success', 'Note created successfully!');
+            //return redirect()->to('/notes')->with('success', 'Note created successfully!');
+            return redirect()->to('/')->with('success', 'Note created successfully!');
         } else {
             // Redirect with error message
             return redirect()->back()->with('error', 'Failed to create note')->withInput();
