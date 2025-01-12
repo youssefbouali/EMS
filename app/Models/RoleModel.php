@@ -18,7 +18,7 @@ class RoleModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'role_name' => 'required|string',
+        'role_name' => 'required|string|in_list[student,professor]',
     ];
 
     protected $validationMessages = [
@@ -27,4 +27,33 @@ class RoleModel extends Model
         ],
     ];
     //protected $skipValidation = false;
+	
+
+    private $data;
+	
+    //public function __construct($data = [])
+    public function setobject($data = [])
+    {
+        ////parent::__construct();
+	
+        $this->data = $data;
+    }
+	
+    public function add()
+    {
+        if (empty($this->data)) {
+            throw new \InvalidArgumentException('No data provided for saving.');
+        }
+	
+        if (!$this->validate($this->data)) {
+            return false;
+        }
+	
+        return $this->insert($this->data);
+    }
+	
+    public function getErrors()
+    {
+        return $this->errors();
+    }
 }

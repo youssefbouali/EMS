@@ -41,21 +41,55 @@ class RegisterController extends BaseController
             return redirect()->to('/');
         }
 
+        // Get POST data
+        $data = $this->request->getPost();
+        $data['cne'] = $data['cne'] ?? "";
+        $data['cin'] = $data['cin'] ?? "";
+        $data['dateNaissance'] = $data['dateNaissance'] ?? "";
+
+        $userData = [
+            'nom' => $data['nom'],
+            'prenom' => $data['prenom'],
+            'cne' => $data['cne'],
+            'cin' => $data['cin'],
+            'dateNaissance' => $data['dateNaissance'],
+        ];
+
+		$accountData = [
+            //'idUser' => $userId,
+            'email' => $data['email'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+        ];
+		
+		$roleData = [
+            //'idAccount' => $accountId,
+            'role_name' => $data['role_name'],
+        ];
+		
+		
+
+        // Load models
+        $userModel = new UserModel();
+        $accountModel = new AccountModel();
+        $roleModel = new RoleModel();
+		
+
         // Validate the request
         $validation = \Config\Services::validation();
-        $validation->setRules([
-            'nom' => 'required|string|max_length[191]',
-            'prenom' => 'required|string|max_length[191]',
-            'email' => 'required|valid_email|max_length[191]',
-            'password' => 'required|min_length[8]',
-            'confirmPassword' => 'required|min_length[8]|matches[password]',
-            'role' => 'required|string|in_list[student,professor]',
-            'cne' => 'permit_empty|min_length[3]|max_length[20]',
-            'cin' => 'permit_empty|min_length[3]|max_length[20]',
-            'dateNaissance' => 'permit_empty|min_length[3]',
-        ]);
-
-        if (!$validation->withRequest($this->request)->run()) {
+		
+		
+		$validationRules = array_merge(
+			$userModel->getValidationRules(),
+			$accountModel->getValidationRules(),
+			$roleModel->getValidationRules(),
+			[
+				'confirmPassword' => 'required|min_length[8]|matches[password]',
+			],
+		);
+		
+        //$validation->setRules($validationRules);
+		
+        if (!$validation->setRules($validationRules)->run($this->request->getPost())) {
             // Return validation errors
             // return $this->response->setJSON([
                 // 'status' => 'error',
@@ -63,44 +97,37 @@ class RegisterController extends BaseController
             // ]);
 			return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
-
-        // Get POST data
-        $data = $this->request->getPost();
-        $data['cne'] = $data['cne'] ?? "";
-        $data['cin'] = $data['cin'] ?? "";
-        $data['dateNaissance'] = $data['dateNaissance'] ?? "";
+		
+		
+		
+		
 
         // Create the user
-        $userId = $userModel->insert([
-            'nom' => $data['nom'],
-            'prenom' => $data['prenom'],
-            'cne' => $data['cne'],
-            'cin' => $data['cin'],
-            'dateNaissance' => $data['dateNaissance'],
-        ]);
+        //$userId = $userModel->insert($userData);
+        $userObject = $userModel->setobject($userData);
+        $userId = $userModel->add();
 
-        // Create the account
-        $accountId = $accountModel->insert([
-            'idUser' => $userId,
-            'email' => $data['email'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-        ]);
-
-        $role = $data['role'];
-
+		$accountData["idUser"] = $userId;
+        $accountObject = $accountModel->setobject($accountData);
+        $accountId = $accountModel->add();
+        //$accountId = $accountModel->insert($accountData);
+		
+		
+		$roleData["idAccount"] = $accountId;
         // Create the role
-        $roleId = $roleModel->insert([
-            'idAccount' => $accountId,
-            'role_name' => $role,
-        ]);
+        //$roleId = $roleModel->insert($roleData);
+        $roleObject = $roleModel->setobject($roleData);
+        $roleId = $roleModel->add();
+		
+		
 
        if ($userId && $accountId && $roleId) {
-           session()->set([
-               'user_id' => $userId,
-               'email' => $data['email'],
-               'role' => $data['role'],
-               'logged_in' => true
-           ]);
+           //session()->set([
+           //    'user_id' => $userId,
+           //    'email' => $data['email'],
+           //    'role' => $data['role'],
+           //    'logged_in' => true
+           //]);
            // Redirection vers la page de connexion en cas de succès
            return redirect()->to('/login')->with('success', 'Registration successful! Please log in.');
        } else {
