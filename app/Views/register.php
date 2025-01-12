@@ -87,17 +87,17 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="role">Rôle</label><br>
+                <label for="role_name">Rôle</label><br>
                 <label>
-                    <input type="radio" name="role" value="student" <?php echo (old('role') == 'student') ? 'checked' : ''; ?>> Étudiant
+                    <input type="radio" name="role_name" value="student" <?php echo (old('role_name') == 'student') ? 'checked' : ''; ?>> Étudiant
                 </label>
                 <label class="ml-3">
-                    <input type="radio" name="role" value="professor" <?php echo (old('role') == 'professor') ? 'checked' : ''; ?>> Professeur
+                    <input type="radio" name="role_name" value="professor" <?php echo (old('role_name') == 'professor') ? 'checked' : ''; ?>> Professeur
                 </label>
             </div>
 
 
-            <div id="student-fields" class="<?php echo old('role') == 'student' ? '' : 'd-none'; ?>">
+            <div id="student-fields" class="<?php echo old('role_name') == 'student' ? '' : 'd-none'; ?>">
                 <div class="form-group mb-3">
                     <label for="cne">CNE</label>
                     <input type="text" class="form-control" id="cne" name="cne"
@@ -112,7 +112,7 @@
                 </div>
             </div>
 
-            <div id="professor-fields" class="<?php echo old('role') == 'professor' ? '' : 'd-none'; ?>">
+            <div id="professor-fields" class="<?php echo old('role_name') == 'professor' ? '' : 'd-none'; ?>">
                 <div class="form-group mb-3">
                     <label for="cin">CIN</label>
                     <input type="text" class="form-control" id="cin" name="cin"
@@ -130,7 +130,7 @@
 
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.querySelectorAll('input[name="role"]').forEach(input => {
+        document.querySelectorAll('input[name="role_name"]').forEach(input => {
             input.addEventListener('change', () => {
                 if (input.value === 'student') {
                     document.getElementById('student-fields').classList.remove('d-none');
