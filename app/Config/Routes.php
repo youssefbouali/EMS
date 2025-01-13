@@ -18,7 +18,7 @@ $routes->get('/logout', 'LoginController::logout');
 $routes->get('/notes', 'NoteController::NoteForm');
 $routes->post('/notes', 'NoteController::AddNote');
 
-$routes->get('ingenierie', 'SaisieController::ingenierie');
-$routes->get('intelligence', 'SaisieController::intelligence');
-$routes->get('systeme', 'SaisieController::systeme');
+$routes->get('/filiere/ingenierie', 'SaisieController::ingenierie');
+$routes->get('/filiere/intelligence', 'SaisieController::intelligence');
+$routes->get('/filiere/systeme', 'SaisieController::systeme');
 

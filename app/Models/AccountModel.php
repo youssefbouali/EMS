@@ -57,6 +57,59 @@ class AccountModel extends Model
 	
         return $this->insert($this->data);
     }
+
+    public function login(string $email, string $password): bool | array{
+		
+        $user = $this->where('email', $email)->first();
+
+        if($user !== null && password_verify($password, $user['password']) ){
+			
+            return $user;
+			
+        } else {
+			
+            return false;
+        }
+    }
+
+    public function updateAccount($id, $data)
+    {
+        if (empty($data)) {
+            throw new \InvalidArgumentException('No data provided for updating.');
+        }
+
+        if (!$this->validate($data)) {
+            return false;
+        }
+
+        return $this->update($id, $data);
+    }
+
+    public function deleteAccount($id)
+    {
+        if (empty($id)) {
+            throw new \InvalidArgumentException('No ID provided for deletion.');
+        }
+
+        return $this->delete($id);
+    }
+	
+    public function getAccountById($idAccount)
+    {
+        return $this->where('idAccount', $idAccount)->first();
+    }
+	
+    public function getAccountByEmail(string $email): ?array
+    {
+        $profile = $this->db->table($this->table); 
+        $profile->join('user', 'account.idUser = user.id');
+        $profile->where('account.email', $email);
+        
+        $result = $profile->get()->getRowArray();
+        
+      
+        return $result ?: null;
+    }
 	
     public function getErrors()
     {

@@ -51,6 +51,20 @@ class RoleModel extends Model
 	
         return $this->insert($this->data);
     }
+
+    public function role(string $idAccount): bool | array{
+		
+        $role = $this->where('idAccount', $idAccount)->first();
+
+        if($role !== null ){
+			
+            return $role;
+			
+        } else {
+			
+            return false;
+        }
+    }
 	
     public function getErrors()
     {

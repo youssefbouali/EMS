@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
+    <title>EMS Gestion des Examens - Dashboard Professor</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
@@ -20,9 +20,9 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="/ingenierie">Ingenierie logiciel</a></li>
-                        <li><a class="dropdown-item" href="/intelligence">Intelligence artificielle</a></li>
-                        <li><a class="dropdown-item" href="/systeme">Système embarqué</a></li>
+                        <li><a class="dropdown-item" href="/filiere/ingenierie">Ingenierie logiciel</a></li>
+                        <li><a class="dropdown-item" href="/filiere/intelligence">Intelligence artificielle</a></li>
+                        <li><a class="dropdown-item" href="/filiere/systeme">Système embarqué</a></li>
                     </ul>
                 </li>
             </ul>
@@ -34,7 +34,7 @@
             <h2 class="text-center">Welcome to The dashboard Professor</h2>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
-                    <a href="/ingenierie" class="text-decoration-none">
+                    <a href="/filiere/ingenierie" class="text-decoration-none">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Ingenierie logiciel</h5>
@@ -44,7 +44,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="/intelligence" class="text-decoration-none">
+                    <a href="/filiere/intelligence" class="text-decoration-none">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Intelligence artificielle</h5>
@@ -54,7 +54,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="/systeme" class="text-decoration-none">
+                    <a href="/filiere/systeme" class="text-decoration-none">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Système embarqué</h5>

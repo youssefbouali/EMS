@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
+    <title>EMS Gestion des Examens - Dashboard Student</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
 <body>
@@ -36,7 +36,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Ingenierie logiciel</h5>
-                                <p class="card-text">Cliquez pour gérer les notes d'ingénierie logiciel.</p>
+                                <p class="card-text">Cliquez pour afficher les notes d'ingénierie logiciel.</p>
                             </div>
                         </div>
                     </a>
