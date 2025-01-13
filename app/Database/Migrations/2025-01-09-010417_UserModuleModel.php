@@ -24,7 +24,7 @@ class CreateUserModuleTable extends Migration
                 'constraint' => 11,
                 'unsigned'   => true,
             ],
-            'typeRelation' => [
+            'type' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 191,
             ],
