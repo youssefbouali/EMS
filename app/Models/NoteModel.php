@@ -66,6 +66,21 @@ class NoteModel extends Model
         return $this->insert($this->data);
     }
 	
+
+    public function getNotesByStudent($idUser) {
+        return $this->where('idUser', $idUser)->findAll();
+    }
+
+
+    public function getNotesByModule($idModule) {
+        return $this->where('idModule', $idModule)->findAll();
+    }
+
+
+    public function getNoteByStudentModule($idUser, $idModule){
+        return $this->where(['idUser' => $idUser, 'idModule' => $idModule])->findAll();
+    }
+	
     public function getErrors()
     {
         return $this->errors();

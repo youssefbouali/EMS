@@ -18,7 +18,7 @@ class RoleModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'role_name' => 'required|string',
+        'role_name' => 'required|string|in_list[student,professor]',
         'user_id' => 'required|is_natural_no_zero', // Ensure user_id is provided and valid
     ];
 
@@ -37,6 +37,48 @@ class RoleModel extends Model
     {
         return $this->belongsTo('App\Models\UserModel', 'user_id', 'id');
     }
-}
+	
 
+    private $data;
+	
+    //public function __construct($data = [])
+    public function setobject($data = [])
+    {
+        ////parent::__construct();
+	
+        $this->data = $data;
+    }
+	
+    public function add()
+    {
+        if (empty($this->data)) {
+            throw new \InvalidArgumentException('No data provided for saving.');
+        }
+	
+        if (!$this->validate($this->data)) {
+            return false;
+        }
+	
+        return $this->insert($this->data);
+    }
+
+    public function role(string $idAccount): bool | array{
+		
+        $role = $this->where('idAccount', $idAccount)->first();
+
+        if($role !== null ){
+			
+            return $role;
+			
+        } else {
+			
+            return false;
+        }
+    }
+	
+    public function getErrors()
+    {
+        return $this->errors();
+    }
+}
 

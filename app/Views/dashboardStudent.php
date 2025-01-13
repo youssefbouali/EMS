@@ -1,54 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
-    <!-- Bootstrap CSS from local directory -->
+    <title>EMS Gestion des Examens - Dashboard Student</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
-
 <body>
-    <div class="card">
-        <h2 class="text-center">Welcome to The dashboard Student</h2>
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-column vh-100 p-3">
+            <a class="navbar-brand mb-4" href="#">EMS Dashboard</a>
+            <ul class="navbar-nav flex-column w-100">
+                <li class="nav-item">
+                    <a class="nav-link" href="/dashboard.php">Dashboard</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="gestionNotesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Affichage des notes
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
+                        <li><a class="dropdown-item" href="/ingenierie">Ingenierie logiciel</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <a href="/logout" class="btn btn-danger mt-auto">Logout</a>
+        </nav>
 
-    <!-- Display Success Messages -->
-    <?php if (session()->getFlashdata('success')): ?>
-        <div style="color: green;">
-            <p><?= esc(session()->getFlashdata('success')) ?></p>
-        </div>
-    <?php endif; ?>
-
-        <!-- Affichage des erreurs -->
-        <?php if (session()->getFlashdata('errors')): ?>
-            <div class="alert alert-danger">
-                <ul>
-                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                        <li><?php esc($error) ?></li>
-                    <?php endforeach; ?>
-                </ul>
+        <!-- Main Content -->
+        <div class="container-fluid p-4">
+            <h2 class="text-center">Welcome to The dashboard Student</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <a href="/ingenierie" class="text-decoration-none">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Ingenierie logiciel</h5>
+                                <p class="card-text">Cliquez pour afficher les notes d'ingénierie logiciel.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
-        <?php endif; ?>
-
-        <div>
-			<a href="/logout">Logout</a>
-		</div>
+        </div>
+    </div>
 
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.querySelectorAll('input[name="role"]').forEach(input => {
-            input.addEventListener('change', () => {
-                if (input.value === '0') {
-                    document.getElementById('student-fields').classList.remove('d-none');
-                    document.getElementById('professor-fields').classList.add('d-none');
-                } else {
-                    document.getElementById('professor-fields').classList.remove('d-none');
-                    document.getElementById('student-fields').classList.add('d-none');
-                }
-            });
-        });
-    </script>
-
 </body>
 </html>

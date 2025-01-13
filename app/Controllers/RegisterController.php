@@ -98,9 +98,6 @@ class RegisterController extends BaseController
 			return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 		
-		
-		
-		
 
         // Create the user
         //$userId = $userModel->insert($userData);
@@ -115,11 +112,11 @@ class RegisterController extends BaseController
 		
 		$roleData["idAccount"] = $accountId;
         // Create the role
-        $roleId = $roleModel->insert([
-            'idAccount' => $accountId,
-            'role_name' => $role,
-            'user_id' => $userId,
-        ]);
+        //$roleId = $roleModel->insert($roleData);
+        $roleObject = $roleModel->setobject($roleData);
+        $roleId = $roleModel->add();
+		
+		
 
        if ($userId && $accountId && $roleId) {
            //session()->set([

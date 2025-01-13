@@ -21,5 +21,3 @@ $routes->post('/notes', 'NoteController::AddNote');
 $routes->get('/filiere', 'SectorController::filiere');
 $routes->get('/module/(:num)', 'ModuleController::index/$1');
 
-
-

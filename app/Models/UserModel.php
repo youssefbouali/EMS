@@ -72,9 +72,48 @@ class UserModel extends Model
 	
         return $this->insert($this->data);
     }
+
+    public function updateUser($id, $data)
+    {
+        if (empty($data)) {
+            throw new \InvalidArgumentException('No data provided for updating.');
+        }
+
+        if (!$this->validate($data)) {
+            return false;
+        }
+
+        return $this->update($id, $data);
+    }
+
+    public function deleteUser($id)
+    {
+        if (empty($id)) {
+            throw new \InvalidArgumentException('No ID provided for deletion.');
+        }
+
+        return $this->delete($id);
+    }
+	
+    public function getUserById($idUser)
+    {
+        return $this->where('idUser', $idUser)->first();
+    }
+	
+    public function getUserByEmail(string $email): ?array
+    {
+        $profile = $this->db->table($this->table); 
+        $profile->join('account', 'user.id = account.idUser');
+        $profile->where('account.email', $email);
+        
+        $result = $profile->get()->getRowArray();
+      
+        return $result ?: null;
+    }
 	
     public function getErrors()
     {
         return $this->errors();
     }
+	
 }
