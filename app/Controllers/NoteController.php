@@ -13,7 +13,7 @@ class NoteController extends BaseController
         //return view('note');
     }
 
-    public function Note()
+    public function AddNote()
     {
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
@@ -45,7 +45,7 @@ class NoteController extends BaseController
 		//if($usermodule["type"] == "professor"){
 
 			// Insert the note
-			$noteId = $noteModel->insert([
+			$noteData = [
 				'session' => $data['session'],
 				'description' => $data['description'] ?? null,
 				'noteNormal' => $data['noteNormal'],
@@ -53,7 +53,9 @@ class NoteController extends BaseController
 				'idModule' => $data['idModule'],
 				'idUserProfessor' => session()->get('user_id'),
 				'idUserStudent' => $data['idUserStudent'],
-			]);
+			];
+			$noteObject = $noteModel->setobject($noteData);
+			$noteId = $noteModel->add();
 		//}
 
         if ($noteId) {
@@ -72,27 +74,32 @@ class NoteController extends BaseController
         $noteModel = new NoteModel();
 
         // Fetch all notes
-        $notes = $noteModel->findAll();
+        //$notes = $noteModel->findAll();
+		if(session()->get('role')=="professor"){
+			$notes = $noteModel->where('idUserProfessor', session()->get('user_id'))->first();
+		} elseif(session()->get('role')=="student"){
+			$notes = $noteModel->where('idUserStudent', session()->get('user_id'))->first();
+		}
 
         // Load the notes view with the data
-        return view('list_notes', ['notes' => $notes]);
+        return view('notes', ['notes' => $notes]);
     }
 
-    public function editNoteForm($id)
-    {
-        // Instantiate the NoteModel
-        $noteModel = new NoteModel();
-
-        // Fetch the note by ID
-        $note = $noteModel->find($id);
-
-        if (!$note) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException("Note not found");
-        }
-
-        // Load the edit note view with the data
-        return view('edit_note_form', ['note' => $note]);
-    }
+    //public function editNoteForm($id)
+    //{
+    //    // Instantiate the NoteModel
+    //    $noteModel = new NoteModel();
+	//
+    //    // Fetch the note by ID
+    //    $note = $noteModel->find($id);
+	//
+    //    if (!$note) {
+    //        throw new \CodeIgniter\Exceptions\PageNotFoundException("Note not found");
+    //    }
+	//
+    //    // Load the edit note view with the data
+    //    return view('edit_note_form', ['note' => $note]);
+    //}
 
     public function updateNote()
     {

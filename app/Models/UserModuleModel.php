@@ -28,4 +28,33 @@ class UserModuleModel extends Model
             'required' => 'Le nom de la filière est obligatoire.',
         ],
     ];
+	
+
+    private $data;
+	
+    //public function __construct($data = [])
+    public function setobject($data = [])
+    {
+        ////parent::__construct();
+	
+        $this->data = $data;
+    }
+	
+    public function add()
+    {
+        if (empty($this->data)) {
+            throw new \InvalidArgumentException('No data provided for saving.');
+        }
+	
+        if (!$this->validate($this->data)) {
+            return false;
+        }
+	
+        return $this->insert($this->data);
+    }
+	
+    public function getErrors()
+    {
+        return $this->errors();
+    }
 }
