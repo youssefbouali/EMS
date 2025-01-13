@@ -6,30 +6,32 @@ use CodeIgniter\Model;
 
 class ModuleModel extends Model
 {
-    protected $table = 'module';
+    // Update the table name to 'modul'
+    protected $table      = 'modul';
     protected $primaryKey = 'id';
-    protected $useAutoIncrement = true;
-    protected $returnType = 'array';
 
-    protected $allowedFields = ['nom', 'description'];
+    // Define the allowed fields
+    protected $allowedFields = ['nom', 'description', 'sector_id'];
 
+    // Define the timestamps if necessary
     protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
 
+    // Define validation rules (if necessary)
     protected $validationRules = [
-        'nom' => 'required|min_length[3]|max_length[100]',
-        'description' => 'permit_empty|max_length[255]',
+        'nom' => 'required|string|max_length[100]',
+        'sector_id' => 'required|integer',
     ];
 
     protected $validationMessages = [
         'nom' => [
-            'required' => 'Le nom du module est obligatoire',
-            'min_length' => 'Le nom doit avoir au moins 3 caractères',
-            'max_length' => 'Le nom ne doit pas dépasser 100 caractères',
+            'required' => 'The module name is required.',
+            'string'   => 'The module name must be a string.',
         ],
-        'description' => [
-            'max_length' => 'La description ne doit pas dépasser 255 caractères',
+        'sector_id' => [
+            'required' => 'The sector ID is required.',
+            'integer'  => 'The sector ID must be an integer.',
         ],
     ];
 }

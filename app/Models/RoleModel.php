@@ -27,6 +27,11 @@ class RoleModel extends Model
         ],
     ];
     //protected $skipValidation = false;
+
+    public function getUser()
+    {
+		return $this->belongsTo('App\Models\UserModel', 'user_id', 'id');
+    }
 	
 
     private $data;
