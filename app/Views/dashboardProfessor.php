@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                    <li><a class="dropdown-item" href="<?= site_url('/filiere') ?>">Saisie des notes</a></li>
+                    <li><a class="dropdown-item" href="<?= site_url('/sectors') ?>">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
@@ -46,6 +46,7 @@
 
             <!-- Main Content -->
             <div class="container-fluid p-4">
+            <h2 class="text-center">Welcome to The dashboard Professor</h2>
                 <?php if (session()->getFlashdata('success')): ?>
                     <div class="alert alert-success">
                         <p><?= esc(session()->getFlashdata('success')) ?></p>

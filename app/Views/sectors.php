@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
+    <title>EMS Gestion des Examens - Filières</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
 
@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="<?= site_url('/filiere') ?>">Saisie des notes</a></li>
+                        <li><a class="dropdown-item" href="<?= site_url('/sectors') ?>">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
@@ -71,7 +71,7 @@
     $randomColor = $colors[array_rand($colors)];
     ?>
     <div class="col">
-        <a href="<?= site_url('/module/' . $sector['id']) ?>" class="text-decoration-none">
+        <a href="<?= site_url('/modules/' . $sector['id']) ?>" class="text-decoration-none">
             <div class="card" style="background-color: <?= $randomColor; ?>;">
                 <div class="card-body">
                     <h5 class="card-title font-weight-bold "><?= esc($sector['nom']) ?></h5>

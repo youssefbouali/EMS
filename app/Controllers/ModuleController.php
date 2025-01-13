@@ -6,7 +6,7 @@ use App\Models\ModuleModel;
 
 class ModuleController extends BaseController
 {
-    public function index($id)
+    public function modules($id)
     {
         // Initialize the model
         $moduleModel = new \App\Models\ModuleModel();
@@ -15,6 +15,6 @@ class ModuleController extends BaseController
         $data['modules'] = $moduleModel->where('sector_id', $id)->findAll();
 
         // Pass the data to the view
-        return view('module', $data);
+        return view('modules', $data);
     }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
+    <title>EMS Gestion des Examens - Modules</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
 
@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="#">Saisie des notes</a></li>
+                        <li><a class="dropdown-item" href="/sectors">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
@@ -64,17 +64,19 @@
                 <?php endif; ?>
 
                 <!-- Content -->
-                <h2 class="text-center">Module</h2>
+                <h2 class="text-center">Choisissez un module</h2>
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php foreach ($modules as $module): ?>
-                        <div class="col">
-                            <div class="card" onclick="changeContent('<?= esc($module['id']) ?>')">
-                                <div class="card-body">
-                                    <h5 class="card-title" style="cursor: pointer;"><?= esc($module['nom']) ?></h5>
-                                    <p class="card-text"><?= esc($module['description']) ?></p>
-                                </div>
-                            </div>
-                        </div>
+						<div class="col">
+							<a href="<?= site_url('/notes/' . $module['id']) ?>" class="text-decoration-none">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title font-weight-bold "><?= esc($module['nom']) ?></h5>
+										<p class="card-text"><?= esc($module['description']) ?></p>
+									</div>
+								</div>
+							</a>
+						</div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -88,7 +90,7 @@
         // Function to handle content change when a module card is clicked
         function changeContent(moduleId) {
             const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = `<!-- Add your dynamic form content here based on the selected module -->`;
+            contentDiv.innerHTML = contentDiv.innerHTML = '<form action="/notes" method="post">Session: <select name="session" required><option value="normal">Normal</option><option value="rattrapage">Rattrapage</option></select> Note Normal: <input type="number" name="noteNormal" min="0" max="20" required> Note Rattrapage: <input type="number" name="noteRattrapage" min="0" max="20" required> ID Étudiant: <input type="text" name="idUserStudent" required> ID Module: <input type="text" name="idModule" required> description: <input type="text" name="description" required> <button type="submit">Ajouter les Notes</button></form>';
         }
     </script>
 </body>

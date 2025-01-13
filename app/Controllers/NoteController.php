@@ -68,7 +68,7 @@ class NoteController extends BaseController
         }
     }
 
-    public function listNotes()
+    public function notes($id)
     {
         // Instantiate the NoteModel
         $noteModel = new NoteModel();
@@ -76,13 +76,13 @@ class NoteController extends BaseController
         // Fetch all notes
         //$notes = $noteModel->findAll();
 		if(session()->get('role')=="professor"){
-			$notes = $noteModel->where('idUserProfessor', session()->get('user_id'))->first();
+			$data['notes'] = $noteModel->where('idUserProfessor', session()->get('user_id'))->where('idModule', $id)->findAll();
 		} elseif(session()->get('role')=="student"){
-			$notes = $noteModel->where('idUserStudent', session()->get('user_id'))->first();
+			$data['notes'] = $noteModel->where('idUserStudent', session()->get('user_id'))->where('idModule', $id)->findAll();
 		}
 
         // Load the notes view with the data
-        return view('notes', ['notes' => $notes]);
+        return view('notes', $data);
     }
 
     //public function editNoteForm($id)

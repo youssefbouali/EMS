@@ -15,9 +15,11 @@ $routes->post('/login', 'LoginController::login');
 
 $routes->get('/logout', 'LoginController::logout');
 
-$routes->get('/notes', 'NoteController::NoteForm');
-$routes->post('/notes', 'NoteController::AddNote');
+$routes->get('/sectors', 'SectorController::sectors');
 
-$routes->get('/filiere', 'SectorController::filiere');
-$routes->get('/module/(:num)', 'ModuleController::index/$1');
+$routes->get('/modules/(:num)', 'ModuleController::modules/$1');
 
+$routes->get('/module/(:num)', 'UserModuleController::getUsersByModule/$1');
+
+$routes->get('/notes/(:num)', 'NoteController::notes/$1');
+$routes->post('/notes/(:num)', 'NoteController::AddNote/$1');
