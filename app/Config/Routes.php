@@ -15,6 +15,7 @@ $routes->post('/login', 'LoginController::login');
 
 $routes->get('/logout', 'LoginController::logout');
 
+
 $routes->get('/sectors', 'SectorController::sectors');
 
 $routes->get('/modules/(:num)', 'ModuleController::modules/$1');
@@ -23,3 +24,5 @@ $routes->get('/module/(:num)', 'UserModuleController::getUsersByModule/$1');
 
 $routes->get('/notes/(:num)', 'NoteController::notes/$1');
 $routes->post('/notes/(:num)', 'NoteController::AddNote/$1');
+
+$routes->post('/notes/saisirNote', 'NotesController::saisirNote'); // Soumettre la note
