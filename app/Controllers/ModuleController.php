@@ -3,32 +3,18 @@
 namespace App\Controllers;
 
 use App\Models\ModuleModel;
-use CodeIgniter\Controller;
 
-class ModuleController extends Controller
+class ModuleController extends BaseController
 {
-    protected $moduleModel;
-
-    public function __construct()
+    public function index($id)
     {
-        $this->moduleModel = new ModuleModel();
-    }
+        // Initialize the model
+        $moduleModel = new \App\Models\ModuleModel();
 
-    // Récupérer et afficher les noms des modules
-    public function getModuleNames()
-    {
-        $modules = $this->moduleModel->select('nom')->findAll(); 
-        
-        if (empty($modules)) {
-            return $this->response->setJSON([
-                'status' => 'error',
-                'message' => 'Aucun module trouvé.'
-            ]);
-        }
+        // Fetch modules for the selected filiere using the filiere_id
+        $data['modules'] = $moduleModel->where('sector_id', $id)->findAll();
 
-        return $this->response->setJSON([
-            'status' => 'success',
-            'data' => $modules
-        ]);
+        // Pass the data to the view
+        return view('module', $data);
     }
 }

@@ -11,7 +11,7 @@ class RoleModel extends Model
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
 
-    protected $allowedFields = ['idAccount', 'role_name'];
+    protected $allowedFields = ['idAccount', 'role_name','user_id'];
 
     protected $useTimestamps = true;
     protected $createdField = 'created_at';
@@ -19,12 +19,24 @@ class RoleModel extends Model
 
     protected $validationRules = [
         'role_name' => 'required|string',
+        'user_id' => 'required|is_natural_no_zero', // Ensure user_id is provided and valid
     ];
 
     protected $validationMessages = [
         'role_name' => [
             'required' => 'Le rôle est obligatoire.',
         ],
+        'user_id' => [
+            'required' => 'L\'ID de l\'utilisateur est obligatoire.',
+            'is_natural_no_zero' => 'L\'ID de l\'utilisateur doit être un entier valide.',
+        ],
     ];
     //protected $skipValidation = false;
+
+    public function getUser()
+    {
+        return $this->belongsTo('App\Models\UserModel', 'user_id', 'id');
+    }
 }
+
+

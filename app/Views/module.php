@@ -22,13 +22,14 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                    <li><a class="dropdown-item" href="<?= site_url('/filiere') ?>">Saisie des notes</a></li>
+                        <li><a class="dropdown-item" href="#">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
             <a href="/logout" class="btn btn-danger mt-auto">Logout</a>
         </nav>
 
+        <!-- Main Content -->
         <div class="flex-grow-1" style="margin-left: 250px;">
             <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
@@ -39,13 +40,13 @@
                         <button class="btn btn-outline-success" type="submit">Rechercher</button>
                     </form>
                     <a href="#" class="nav-link">
-                    <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
+                        <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
                     </a>
                 </div>
             </nav>
 
-            <!-- Main Content -->
             <div class="container-fluid p-4">
+                <!-- Success and Error Flash Messages -->
                 <?php if (session()->getFlashdata('success')): ?>
                     <div class="alert alert-success">
                         <p><?= esc(session()->getFlashdata('success')) ?></p>
@@ -61,11 +62,35 @@
                         </ul>
                     </div>
                 <?php endif; ?>
+
+                <!-- Content -->
+                <h2 class="text-center">Module</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <?php foreach ($modules as $module): ?>
+                        <div class="col">
+                            <div class="card" onclick="changeContent('<?= esc($module['id']) ?>')">
+                                <div class="card-body">
+                                    <h5 class="card-title" style="cursor: pointer;"><?= esc($module['nom']) ?></h5>
+                                    <p class="card-text"><?= esc($module['description']) ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to handle content change when a module card is clicked
+        function changeContent(moduleId) {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `<!-- Add your dynamic form content here based on the selected module -->`;
+        }
+    </script>
 </body>
+
 </html>

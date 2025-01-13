@@ -92,6 +92,7 @@ class RegisterController extends BaseController
         $roleId = $roleModel->insert([
             'idAccount' => $accountId,
             'role_name' => $role,
+            'user_id' => $userId,
         ]);
 
        if ($userId && $accountId && $roleId) {

@@ -25,6 +25,12 @@ class Modul extends Migration
                 'constraint' => '255',
                 'null'       => true,
             ],
+            'sector_id' => [
+                'type'       => 'INT',
+                'constraint' => 11,
+                'unsigned'   => true,
+                'null'       => false,
+            ],
             'created_at' => [
                 'type'    => 'DATETIME',
                 'null'    => true,
@@ -36,11 +42,17 @@ class Modul extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
+
+        // Adding the foreign key constraint
+        $this->forge->addForeignKey('sector_id', 'sector', 'id', 'CASCADE', 'CASCADE');
+
         $this->forge->createTable('modul');
     }
 
     public function down()
     {
-        $this->forge->createTable('modul', true);
+        // Dropping the foreign key constraint before dropping the table
+        $this->forge->dropForeignKey('modul', 'modul_filiere_id_foreign');
+        $this->forge->dropTable('modul');
     }
 }

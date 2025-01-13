@@ -1,46 +1,37 @@
 <?php
 
-namespace App\Database\Migrations;
+namespace App\Models;
 
-use CodeIgniter\Database\Migration;
+use CodeIgniter\Model;
 
-class CreateModuleTable extends Migration
+class ModuleModel extends Model
 {
-    public function up()
-    {
-        $this->forge->addField([
-            'id' => [
-                'type'           => 'INT',
-                'constraint'     => 11,
-                'unsigned'       => true,
-                'auto_increment' => true,
-            ],
-            'nom' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
-                'null'       => false,
-            ],
-            'description' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '255',
-                'null'       => true,
-            ],
-            'created_at' => [
-                'type'    => 'DATETIME',
-                'null'    => true,
-            ],
-            'updated_at' => [
-                'type'    => 'DATETIME',
-                'null'    => true,
-            ],
-        ]);
+    // Update the table name to 'modul'
+    protected $table      = 'modul';
+    protected $primaryKey = 'id';
 
-        $this->forge->addPrimaryKey('id');
-        $this->forge->createTable('module');
-    }
+    // Define the allowed fields
+    protected $allowedFields = ['nom', 'description', 'sector_id'];
 
-    public function down()
-    {
-        $this->forge->dropTable('module');
-    }
+    // Define the timestamps if necessary
+    protected $useTimestamps = true;
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
+    // Define validation rules (if necessary)
+    protected $validationRules = [
+        'nom' => 'required|string|max_length[100]',
+        'sector_id' => 'required|integer',
+    ];
+
+    protected $validationMessages = [
+        'nom' => [
+            'required' => 'The module name is required.',
+            'string'   => 'The module name must be a string.',
+        ],
+        'sector_id' => [
+            'required' => 'The sector ID is required.',
+            'integer'  => 'The sector ID must be an integer.',
+        ],
+    ];
 }

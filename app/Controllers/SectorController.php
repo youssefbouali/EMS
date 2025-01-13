@@ -6,16 +6,15 @@ use App\Models\SectorModel;
 
 class SectorController extends BaseController
 {
-    // Méthode qui retourne les noms des filières
-    public function getSectors()
+    public function filiere()
     {
-        // Charger le modèle SectorModel
-        $sectorModel = new SectorModel();
+        // Initialize the model
+        $sectorModel = new \App\Models\SectorModel();
 
-        // Récupérer les noms des filières
-        $sectors = $sectorModel->select('nom')->findAll();
+        // Fetch both 'nom' (name) and 'description' from the 'sectors' table
+        $data['sectors'] = $sectorModel->select('id , nom, description')->findAll();
 
-        // Retourner les noms sous forme de JSON
-        return $this->response->setJSON($sectors);
+        // Pass data to the view
+        return view('filiere', $data);
     }
 }

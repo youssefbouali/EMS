@@ -18,3 +18,8 @@ $routes->get('/logout', 'LoginController::logout');
 $routes->get('/notes', 'NoteController::NoteForm');
 $routes->post('/notes', 'NoteController::Note');
 
+$routes->get('/filiere', 'SectorController::filiere');
+$routes->get('/module/(:num)', 'ModuleController::index/$1');
+
+
+
