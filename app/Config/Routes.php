@@ -11,4 +11,7 @@ $routes->post('/register', 'RegisterController::register');
 $routes->get('/login', 'LoginController::LoginForm');
 $routes->post('/login', 'LoginController::login');
 $routes->get('/logout', 'LoginController::logout');
+$routes->get('/notes', 'NotesController::index'); // Afficher les notes et le formulaire
+$routes->post('/notes/saisirNote', 'NotesController::saisirNote'); // Soumettre la note
+
 
