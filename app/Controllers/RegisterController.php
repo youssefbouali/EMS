@@ -98,9 +98,6 @@ class RegisterController extends BaseController
 			return redirect()->back()->withInput()->with('errors', $validation->getErrors());
         }
 		
-		
-		
-		
 
         // Create the user
         //$userId = $userModel->insert($userData);

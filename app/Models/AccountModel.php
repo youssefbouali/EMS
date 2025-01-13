@@ -18,7 +18,7 @@ class AccountModel extends Model
     protected $updatedField = 'updated_at';
 
     protected $validationRules = [
-        'email' => 'required|valid_email|max_length[191]',
+        'email' => 'required|valid_email|max_length[191]|is_unique[account.email]',
         'password' => 'required|string|min_length[8]',
     ];
 

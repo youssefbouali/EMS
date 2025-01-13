@@ -56,7 +56,6 @@ class LoginController extends Controller
 
         // Check if the user exists based on email (assuming email is unique)
         $user = $accountModel->where('email', $email)->first();
-        $role = $roleModel->where('idAccount', $user['id'])->first();
 
         if (!$user) {
             // return $this->response->setJSON([
@@ -74,6 +73,8 @@ class LoginController extends Controller
             // ]);
 			return redirect()->back()->withInput()->with('errors', ['Invalid password.']);
         }
+		
+        $role = $roleModel->where('idAccount', $user['id'])->first();
 
         // Set session data (you can store more user data here)
         session()->set([
