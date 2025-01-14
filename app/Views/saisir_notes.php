@@ -7,6 +7,8 @@
     <title>Saisie des notes</title>
     <!-- Intégration de Bootstrap depuis un CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Intégration de FontAwesome pour les icônes -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,7 +40,7 @@
 
             <div class="mb-3">
                 <label for="note" class="form-label">Note de l'étudiant (0-20):</label>
-                <input type="number" class="form-control" id="note" name="note" min="0" max="20" required>
+                <input type="number" class="form-control" id="note" name="note" min="0" max="20" step="0.25" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Saisir la note</button>
@@ -52,6 +54,7 @@
                 <tr>
                     <th>Nom de l'étudiant</th>
                     <th>Note</th>
+                    <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
                 </tr>
             </thead>
             <tbody>
@@ -59,6 +62,17 @@
                     <tr>
                         <td><?= htmlspecialchars($note['nom_etudiant']) ?></td>
                         <td><?= htmlspecialchars($note['note']) ?></td>
+                        <td>
+                            <!-- Bouton pour modifier la note -->
+                            <a href="/notes/modifier/<?= $note['id'] ?>" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+
+                            <!-- Bouton pour supprimer la note -->
+                            <a href="/notes/supprimer/<?= $note['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette note ?')">
+                                <i class="fas fa-trash-alt"></i> Supprimer
+                            </a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

@@ -40,4 +40,27 @@ class NotesController extends BaseController
             return redirect()->back()->with('error', "L'étudiant {$nom} n'existe pas.");
         }
     }
+    public function modifier($id)
+{
+    $notesModel = new NotesModel();
+
+    // Trouver la note par ID
+    $note = $notesModel->find($id);
+    if (!$note) {
+        return redirect()->to('/notes')->with('error', 'Note introuvable.');
+    }
+
+    // Afficher un formulaire avec les données actuelles pour modification
+    return view('modifier_note', ['note' => $note]);
+}
+public function supprimer($id)
+{
+    $notesModel = new NotesModel();
+
+    // Supprimer la note par ID
+    $notesModel->delete($id);
+
+    return redirect()->to('/notes')->with('success', 'Note supprimée avec succès.');
+}
+
 }
