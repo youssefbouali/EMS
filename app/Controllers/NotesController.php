@@ -7,37 +7,38 @@ use App\Models\NotesModel;
 
 class NotesController extends BaseController
 {
-   // NotesController.php
-public function index()
-{
-    // Récupérer les notes (aucune restriction basée sur le rôle)
-    $model = new NotesModel();
-    $data['notes'] = $model->getNotes();
-    
-    return view('saisir_notes', $data); // Vue pour afficher les notes
-}
+    public function index()
+    {
+        
+		if(session()->get('role')=="professor"){
+			$data['notes'] = $noteModel->where('idUserProfessor', session()->get('user_id'))->where('idModule', $id)->findAll();
+		} elseif(session()->get('role')=="student"){
+			$data['notes'] = $noteModel->where('idUserStudent', session()->get('user_id'))->where('idModule', $id)->findAll();
+		}
 
+        return view('saisir_notes', $data); // Vue avec le formulaire et la liste des notes
+    }
 
     public function saisirNote()
     {
-        $notesModel = new NotesModel();
+        $notesModel = new NoteModel();
         $userModel = new UserModel();
 
-        $nom = $this->request->getPost('nom');
-        $note = $this->request->getPost('note');
+        $idUserStudent = $this->request->getPost('idUserStudent');
+        $noteNormal = $this->request->getPost('noteNormal');
 
-        // Vérifier si l'étudiant existe avec le nom
-        $etudiant = $userModel->where('nom', $nom)->first(); // Vérification dans la table 'user'
+        // Vérifier si l'étudiant existe avec le idUserStudent
+        $etudiant = $userModel->where('idUserStudent', $idUserStudent)->first(); // Vérification dans la table 'user'
 
         if ($etudiant) {
             // Si l'étudiant existe, enregistrer la note
             $data = [
-                'nom_etudiant' => $nom,
-                'note' => $note
+                'idUserStudent' => $idUserStudent,
+                'noteNormal' => $noteNormal
             ];
 
             $notesModel->insert($data);
-            return redirect()->to('/notes')->with('success', 'Note saisie avec succès!');
+            return redirect()->to('/notes')->with('success', 'noteNormal saisie avec succès!');
         } else {
             // Si l'étudiant n'existe pas, rediriger avec un message d'erreur
             return redirect()->back()->with('error', "L'étudiant {$nom} n'existe pas.");

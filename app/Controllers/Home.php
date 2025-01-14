@@ -7,8 +7,11 @@ class Home extends BaseController
     public function index(): string
     {
         
-        if (session()->has('user_id')) {
-            return view('dashboard');
+        if (session()->get('role')=="professor") {
+            return view('dashboardProfessor');
+			
+        } elseif (session()->get('role')=="student") {
+            return view('dashboardStudent');
         }
         return view('register');
     }

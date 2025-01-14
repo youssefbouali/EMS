@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\AccountModel;
+use App\Models\RoleModel;
 use CodeIgniter\Controller;
 
 class LoginController extends Controller
@@ -31,6 +32,7 @@ class LoginController extends Controller
         }
         
         $accountModel = new AccountModel();
+        $roleModel = new RoleModel();
 
         // recuperer les valeurs email et password
         $email = $this->request->getPost('email');
@@ -53,29 +55,23 @@ class LoginController extends Controller
         }
 
         // Check if the user exists based on email (assuming email is unique)
-        $user = $accountModel->where('email', $email)->first();
+        $account = $accountModel->login($email, $password);
 
-        if (!$user) {
+        if (!$account) {
             // return $this->response->setJSON([
                 // 'status' => 'error',
                 // 'message' => 'User not found'
             // ]);
-			return redirect()->back()->withInput()->with('errors', ['Invalid email.']);
+			return redirect()->back()->withInput()->with('errors', ['Invalid email or password.']);
         }
-
-        // Verify password
-        if (!password_verify($password, $user['password'])) {
-            // return $this->response->setJSON([
-                // 'status' => 'error',
-                // 'message' => 'Mot de passe incorrect'
-            // ]);
-			return redirect()->back()->withInput()->with('errors', ['Invalid password.']);
-        }
+		
+		$role = $roleModel->role($account['id']);
 
         // Set session data (you can store more user data here)
         session()->set([
-            'user_id' => $user['id'],
-            'email' => $user['email'],
+            'user_id' => $account['idUser'],
+            'email' => $account['email'],
+            'role' => $role['role_name'],
             'logged_in' => true
         ]);
 

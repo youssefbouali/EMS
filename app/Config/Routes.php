@@ -5,14 +5,26 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'HomeController::index');  // Définir la route vers la page d'accueil
+$routes->get('/', 'Home::index');
+
 $routes->get('/register', 'RegisterController::RegisterForm');
 $routes->post('/register', 'RegisterController::register');
+
 $routes->get('/login', 'LoginController::LoginForm');
 $routes->post('/login', 'LoginController::login');
+
 $routes->get('/logout', 'LoginController::logout');
-$routes->get('/notes', 'NotesController::index'); // Afficher les notes et le formulaire
-$routes->post('/notes/saisirNote', 'NotesController::saisirNote'); // Soumettre la note
-$routes->get('/notes/modifier/(:num)', 'NotesController::modifier/$1'); // Modifier la note
-$routes->get('/notes/supprimer/(:num)', 'NotesController::supprimer/$1'); // Supprimer la note
-$routes->post('/notes/modifierNote/(:num)', 'NotesController::modifierNote/$1'); // Traiter la modification
+
+
+$routes->get('/sectors', 'SectorController::sectors');
+
+$routes->get('/modules/(:num)', 'ModuleController::modules/$1');
+
+$routes->get('/module/(:num)', 'UserModuleController::getUsersByModule/$1');
+
+$routes->get('/notes/(:num)', 'NoteController::notes/$1');
+$routes->post('/notes/(:num)', 'NoteController::AddNotes/$1');
+
+
+$routes->get('/notes/saisirNote', 'NoteController::index'); // Soumettre la note
+$routes->post('/notes/saisirNote', 'NoteController::saisirNote'); // Soumettre la note

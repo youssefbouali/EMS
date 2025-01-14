@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateRoleTable extends Migration
+class CreateUserModuleTable extends Migration
 {
     public function up()
     {
@@ -15,19 +15,19 @@ class CreateRoleTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'idAccount' => [
+            'idUser' => [
                 'type'       => 'INT',
                 'constraint' => 11,
             ],
-            'idUser' => [ // Added user_id field
+            'idModule' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true, // Ensure the user_id is unsigned
+                'unsigned'   => true,
             ],
-			'role_name' => [
-				'type' => 'VARCHAR',
-				'constraint' => 191,
-			],
+            'type' => [
+                'type'       => 'VARCHAR',
+                'constraint' => 191,
+            ],
             'created_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -38,15 +38,13 @@ class CreateRoleTable extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->createTable('role');
-		// Ajout de la clé étrangère pour la relation avec la table 'role'
-        $this->forge->addForeignKey('idAccount', 'account', 'id', 'CASCADE', 'CASCADE');
-            // Add foreign key for user_id (new relationship)
+        $this->forge->createTable('usermodule');
         $this->forge->addForeignKey('idUser', 'user', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('idModule', 'module', 'id', 'CASCADE', 'CASCADE');
     }
 
     public function down()
     {
-        $this->forge->dropTable('role');
+        $this->forge->dropTable('usermodule');
     }
 }
