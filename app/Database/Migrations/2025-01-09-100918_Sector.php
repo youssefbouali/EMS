@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Sector extends Migration
+class CreateSectorTable extends Migration
 {
     public function up()
     {

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
+    <title>EMS Gestion des Examens - Filières</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
 
@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                    <li><a class="dropdown-item" href="<?= site_url('/sectors') ?>">Les filières</a></li>
+                        <li><a class="dropdown-item" href="<?= site_url('/sectors') ?>">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
@@ -39,14 +39,13 @@
                         <button class="btn btn-outline-success" type="submit">Rechercher</button>
                     </form-->
                     <a href="#" class="nav-link">
-                    <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
+                        <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
                     </a>
                 </div>
             </nav>
 
             <!-- Main Content -->
             <div class="container-fluid p-4">
-            <h2 class="text-center">Welcome to The dashboard Professor</h2>
                 <?php if (session()->getFlashdata('success')): ?>
                     <div class="alert alert-success">
                         <p><?= esc(session()->getFlashdata('success')) ?></p>
@@ -62,6 +61,29 @@
                         </ul>
                     </div>
                 <?php endif; ?>
+
+                <!-- Choose a sector -->
+                <h2 class="text-center">Choisissez une filière</h2>
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+    <?php foreach ($sectors as $sector): ?>
+    <?php
+    $colors = ['#ffc197'];
+    $randomColor = $colors[array_rand($colors)];
+    ?>
+    <div class="col">
+        <a href="<?= site_url('/modules/' . $sector['id']) ?>" class="text-decoration-none">
+            <div class="card" style="background-color: <?= $randomColor; ?>;">
+                <div class="card-body">
+                    <h5 class="card-title font-weight-bold "><?= esc($sector['nom']) ?></h5>
+                    <p class="card-text"><?= esc($sector['description']) ?></p>
+                </div>
+            </div>
+        </a>
+    </div>
+    <?php endforeach; ?>
+</div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -69,4 +91,5 @@
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

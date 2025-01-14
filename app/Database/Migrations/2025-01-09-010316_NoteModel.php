@@ -15,15 +15,15 @@ class CreateNoteTable extends Migration
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'session' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 100,
-            ],
-            'description' => [
+            #'session' => [
+            #    'type'       => 'VARCHAR',
+            #    'constraint' => 100,
+            #],
+            /*'description' => [
                 'type'       => 'VARCHAR',
                 'constraint' => 100,
                 'null'       => true,
-            ],
+            ],*/
             'idModule' => [
                 'type'       => 'INT',
                 'constraint' => 11,
@@ -43,6 +43,16 @@ class CreateNoteTable extends Migration
             'noteRattrapage' => [
                 'type'       => 'DECIMAL',
                 'constraint' => '5,2',
+            ],
+            'valide' => [
+                'type'       => 'INT',
+                'constraint' => 11,
+                'null'       => true,
+            ],
+            'archive' => [
+                'type'       => 'INT',
+                'constraint' => 2,
+                'null'       => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

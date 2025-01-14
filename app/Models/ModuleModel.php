@@ -6,12 +6,11 @@ use CodeIgniter\Model;
 
 class ModuleModel extends Model
 {
-    // Update the table name to 'modul'
-    protected $table      = 'modul';
+    protected $table      = 'module';
     protected $primaryKey = 'id';
 
     // Define the allowed fields
-    protected $allowedFields = ['nom', 'description', 'sector_id'];
+    protected $allowedFields = ['nom', 'description', 'idSector'];
 
     // Define the timestamps if necessary
     protected $useTimestamps = true;
@@ -21,7 +20,7 @@ class ModuleModel extends Model
     // Define validation rules (if necessary)
     protected $validationRules = [
         'nom' => 'required|string|max_length[100]',
-        'sector_id' => 'required|integer',
+        'idSector' => 'required|integer',
     ];
 
     protected $validationMessages = [
@@ -29,9 +28,28 @@ class ModuleModel extends Model
             'required' => 'The module name is required.',
             'string'   => 'The module name must be a string.',
         ],
-        'sector_id' => [
+        'idSector' => [
             'required' => 'The sector ID is required.',
             'integer'  => 'The sector ID must be an integer.',
         ],
     ];
+
+
+    public function getModulesBySectorUser($idUser, $idSector) {
+		$modules = $this->db->table($this->table);
+        $modules->join('usermodule', 'module.id = usermodule.idModule');
+        $modules->where('module.idSector', $idSector);
+        $modules->where('usermodule.idUser', session()->get('user_id'));
+        //$modules->where('usermodule.type', 'professor');
+        
+        // Get the result as an array
+        return $modules->get()->getResultArray();
+    }
+
+    public function getModuleById($idModule) {
+		
+        return $this->where('id', $idModule)->first();
+    }
+
+    
 }

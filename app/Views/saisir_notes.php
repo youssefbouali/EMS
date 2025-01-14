@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
+    <title>EMS Gestion des Examens - notes</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 </head>
 
@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="#">Saisie des notes</a></li>
+                        <li><a class="dropdown-item" href="/sectors">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
@@ -64,19 +64,64 @@
                 <?php endif; ?>
 
                 <!-- Content -->
-                <h2 class="text-center">Module</h2>
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <?php foreach ($modules as $module): ?>
-                        <div class="col">
-                            <div class="card" onclick="changeContent('<?= esc($module['id']) ?>')">
-                                <div class="card-body">
-                                    <h5 class="card-title" style="cursor: pointer;"><?= esc($module['nom']) ?></h5>
-                                    <p class="card-text"><?= esc($module['description']) ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+        <div class="container-fluid p-4">
+            <h2 class="text-center">Les notes</h2>
+
+
+        <!-- Affichage des messages d'erreur -->
+        <?php if (session()->getFlashdata('error')) : ?>
+            <div class="alert alert-danger">
+                <?php echo session()->getFlashdata('error'); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Affichage des messages de succès -->
+        <?php if (session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success">
+                <?php echo session()->getFlashdata('success'); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Formulaire pour saisir les informations -->
+        <form action="/notes/saisirNote" method="POST" class="mb-5">
+            <?= csrf_field() ?> <!-- Protection CSRF -->
+
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom de l'étudiant:</label>
+                <input type="text" class="form-control" id="nom" name="nom" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="note" class="form-label">Note de l'étudiant (0-20):</label>
+                <input type="number" class="form-control" id="note" name="note" min="0" max="20" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Saisir la note</button>
+        </form>
+
+        <hr>
+
+        <h2 class="text-center mb-4">Liste des étudiants et de leurs notes</h2>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Nom de l'étudiant</th>
+                    <th>Note</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+            <!-- Flash Messages -->
+            <?php if (session()->getFlashdata('success')): ?>
+                <div class="alert alert-success mt-3">
+                    <p><?= esc(session()->getFlashdata('success')) ?></p>
                 </div>
+            <?php endif; ?>
+        </div>
+		
+		
             </div>
         </div>
     </div>
@@ -85,10 +130,10 @@
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Function to handle content change when a module card is clicked
-        function changeContent(moduleId) {
+        // Function to handle content change when a note card is clicked
+        function changeContent(noteId) {
             const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = `<!-- Add your dynamic form content here based on the selected module -->`;
+            contentDiv.innerHTML = contentDiv.innerHTML = '<form action="/notes" method="post">Session: <select name="session" required><option value="normal">Normal</option><option value="rattrapage">Rattrapage</option></select> Note Normal: <input type="number" name="noteNormal" min="0" max="20" required> Note Rattrapage: <input type="number" name="noteRattrapage" min="0" max="20" required> ID Étudiant: <input type="text" name="idUserStudent" required> ID note: <input type="text" name="idnote" required> description: <input type="text" name="description" required> <button type="submit">Ajouter les Notes</button></form>';
         }
     </script>
 </body>
