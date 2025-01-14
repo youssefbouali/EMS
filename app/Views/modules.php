@@ -6,39 +6,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMS Gestion des Examens - Modules</title>
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <style>
+        /* Custom Styles */
+        .sidebar {
+            width: 250px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding-top: 20px;
+        }
+
+        .navbar {
+            z-index: 1050;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-weight: bold;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .btn-logout {
+            margin-top: auto;
+        }
+
+        /* Media Query for small screens */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark flex-column vh-100 p-3" style="width: 250px; position: fixed;">
+        <nav class="navbar navbar-dark bg-dark sidebar flex-column p-3">
             <a class="navbar-brand mb-4" href="#">EMS Dashboard</a>
             <ul class="navbar-nav flex-column w-100">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Dashboard</a>
+                    <a class="nav-link" href="/">🏠 Dashboard</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="gestionNotesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestion des notes
+                        📚 Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="/sectors">Les filières</a></li>
+                        <li><a class="dropdown-item" href="<?= site_url('/sectors') ?>">Saisie des notes</a></li>
                     </ul>
                 </li>
             </ul>
             <a href="/logout" class="btn btn-danger mt-auto">Logout</a>
         </nav>
-
         <!-- Main Content -->
-        <div class="flex-grow-1" style="margin-left: 250px;">
+        <div class="flex-grow-1 main-content">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light w-100">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">EMS Dashboard</a>
-                    <!--form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    </form-->
+                <a class="navbar-brand d-inline font-weight-bold" href="#">
+                     Gestion des notes / <span>Filière</span> / <span class="text-primary">Module</span>
+                </a>
+                <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Rechercher</button>
+        </form>
                     <a href="#" class="nav-link">
                         <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
                     </a>
@@ -64,19 +119,19 @@
                 <?php endif; ?>
 
                 <!-- Content -->
-                <h2 class="text-center">Choisissez un module : <?= esc($nom) ?></h2>
+                <h2 class="text-center mb-4">Choisissez un module : <?= esc($nom) ?></h2>
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php foreach ($modules as $module): ?>
-						<div class="col">
-							<a href="<?= site_url('/notes/' . $module['idModule']) ?>" class="text-decoration-none">
-								<div class="card">
-									<div class="card-body">
-										<h5 class="card-title font-weight-bold "><?= esc($module['nom']) ?></h5>
-										<p class="card-text"><?= esc($module['description']) ?></p>
-									</div>
-								</div>
-							</a>
-						</div>
+                        <div class="col">
+                            <a href="<?= site_url('/notes/' . $module['idModule']) ?>" class="text-decoration-none">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?= esc($module['nom']) ?></h5>
+                                        <p class="card-text"><?= esc($module['description']) ?></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -86,13 +141,6 @@
     <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        // Function to handle content change when a module card is clicked
-        function changeContent(moduleId) {
-            const contentDiv = document.getElementById('content');
-            contentDiv.innerHTML = contentDiv.innerHTML = '<form action="/notes" method="post">Session: <select name="session" required><option value="normal">Normal</option><option value="rattrapage">Rattrapage</option></select> Note Normal: <input type="number" name="noteNormal" min="0" max="20" required> Note Rattrapage: <input type="number" name="noteRattrapage" min="0" max="20" required> ID Étudiant: <input type="text" name="idUserStudent" required> ID Module: <input type="text" name="idModule" required> description: <input type="text" name="description" required> <button type="submit">Ajouter les Notes</button></form>';
-        }
-    </script>
 </body>
 
 </html>
