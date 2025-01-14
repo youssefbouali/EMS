@@ -7,13 +7,16 @@ use App\Models\NotesModel;
 
 class NotesController extends BaseController
 {
-    public function index()
-    {
-        $model = new NotesModel();
-        $data['notes'] = $model->getNotes();
+   // NotesController.php
+public function index()
+{
+    // Récupérer les notes (aucune restriction basée sur le rôle)
+    $model = new NotesModel();
+    $data['notes'] = $model->getNotes();
+    
+    return view('saisir_notes', $data); // Vue pour afficher les notes
+}
 
-        return view('saisir_notes', $data); // Vue avec le formulaire et la liste des notes
-    }
 
     public function saisirNote()
     {
