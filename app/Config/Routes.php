@@ -5,7 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/', 'HomeController::index');  // Définir la route vers la page d'accueil
 $routes->get('/register', 'RegisterController::RegisterForm');
 $routes->post('/register', 'RegisterController::register');
 $routes->get('/login', 'LoginController::LoginForm');
