@@ -15,11 +15,11 @@
             <a class="navbar-brand mb-4" href="#">EMS Dashboard</a>
             <ul class="navbar-nav flex-column w-100">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Dashboard</a>
+                    <a class="nav-link" href="/"> 🏠 Dashboard</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="gestionNotesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Gestion des notes
+                    📚 Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
                         <li><a class="dropdown-item" href="/sectors">Les filières</a></li>
@@ -32,18 +32,21 @@
         <!-- Main Content -->
         <div class="flex-grow-1" style="margin-left: 250px;">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">EMS Dashboard</a>
-                    <!--form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    </form-->
-                    <a href="#" class="nav-link">
-                        <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
-                    </a>
-                </div>
-            </nav>
+           <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Saisie des notes</a>
+        <!-- Formulaire de recherche -->
+        <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Rechercher</button>
+        </form>
+        <!-- Profil utilisateur -->
+        <a href="#" class="nav-link">
+            <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
+        </a>
+    </div>
+</nav>
+
 
             <div class="container-fluid p-4">
                 <!-- Success and Error Flash Messages -->
@@ -64,59 +67,74 @@
                 <?php endif; ?>
 
                 <!-- Content -->
-        <div class="container-fluid p-4">
-            <h2 class="text-center">Les notes : <?= esc($nom) ?></h2>
+                <div class="container-fluid p-4">
+    <h2 class="text-center">Les notes : <?= esc($nom) ?></h2>
 
-            <!-- Table -->
-            <form action="/notes/1" method="post" id="notesForm">
-                <table class="table table-bordered">
-                    <thead>
+    <!-- Table -->
+    <form action="/notes/1" method="post" id="notesForm">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Identifiant</th>
+                        <th>CNE</th>
+                        <th>Nom de l'Étudiant</th>
+                        <th>Note Normal</th>
+                        <th>Note Rattrapage</th>
+                        <th>Valide</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($notes as $note): ?>
                         <tr>
-                            <th>Identifient</th>
-                            <th>CNE</th>
-                            <th>Nom de l'Étudiant</th>
-                            <th>Note Normal</th>
-                            <th>Note Rattrapage</th>
-                            <th>Valide</th>
+                            <td><?= esc($note['idUserStudent']) ?></td>
+                            <td><?= esc($note['cne']) ?></td>
+                            <td><?= esc($note['prenom']) ?> <?= esc($note['nom']) ?></td>
+                            <td>
+                                <input type="number" name="note_[<?= esc($note['idModule']) ?>,<?= esc($note['idUserStudent']) ?>,normal]" class="form-control" min="0" max="20" value="<?= esc($note['noteNormal']) ?>" required>
+                            </td>
+                            <td>
+                                <input type="number" name="note_[<?= esc($note['idModule']) ?>,<?= esc($note['idUserStudent']) ?>,rattrapage]" class="form-control" min="0" max="20" value="<?= esc($note['noteRattrapage']) ?>" required>
+                            </td>
+                            <td><?= esc($note['valide']) ?></td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($notes as $note): ?>
-                            <tr>
-                                <td><?= esc($note['idUserStudent']) ?></td>
-                                <td><?= esc($note['cne']) ?></td>
-                                <td><?= esc($note['prenom']) ?> <?= esc($note['nom']) ?></td>
-                                <td>
-                                    <input type="number" name="note_[<?= esc($note['idModule']) ?>,<?= esc($note['idUserStudent']) ?>,normal]" class="form-control" min="0" max="20" value="<?= esc($note['noteNormal']) ?>" required>
-                                </td>
-                                <td>
-                                    <input type="number" name="note_[<?= esc($note['idModule']) ?>,<?= esc($note['idUserStudent']) ?>,rattrapage]" class="form-control" min="0" max="20" value="<?= esc($note['noteRattrapage']) ?>" required>
-                                </td>
-                                <td><?= esc($note['valide']) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-				
-            <?php if (session()->get('role')=="professor"): ?>
-                <button type="submit" class="btn btn-primary">Confirmer la saisie</button>
-            <?php endif; ?>
-            </form>
-<?php if (session()->get('role')=="professor"): ?>
-	<input type="file" id="my_file_input" />
-	<br />
-	<div id='my_file_output'></div>
-	<a href="/assets/notes.xlsx">Download xlsx for Notes</a>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <?php if (session()->get('role')=="professor"): ?>
+            <div class="d-flex justify-content-end align-items-center mt-3">
+    <!-- Confirm button aligned to the right -->
+    <button type="submit" class="btn btn-dark">Confirmer la saisie</button>
+</div>
+
+    <div class="mt-4">
+        <!-- Title for file import option -->
+        <h5 class="text-center mb-3">Importer des notes au format XLSX</h5>
+        
+        <!-- Import file button -->
+        <div class="d-flex justify-content-center align-items-center">
+            <label for="my_file_input" class="btn btn-secondary">Importer un fichier</label>
+            <input type="file" id="my_file_input" style="display: none;" />
+        </div>
+        
+        <!-- File download button -->
+        <div class="text-center mt-3">
+            <a href="/assets/notes.xlsx" class="btn btn-success">Télécharger le fichier XLSX</a>
+        </div>
+    </div>
 <?php endif; ?>
 
+    </form>
 
-            <!-- Flash Messages -->
-            <?php if (session()->getFlashdata('success')): ?>
-                <div class="alert alert-success mt-3">
-                    <p><?= esc(session()->getFlashdata('success')) ?></p>
-                </div>
-            <?php endif; ?>
+    <!-- Flash Messages -->
+    <?php if (session()->getFlashdata('success')): ?>
+        <div class="alert alert-success mt-3">
+            <p><?= esc(session()->getFlashdata('success')) ?></p>
         </div>
+    <?php endif; ?>
+</div>
+
 		
 		
             </div>

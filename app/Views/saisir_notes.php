@@ -93,7 +93,7 @@
 
             <div class="mb-3">
                 <label for="note" class="form-label">Note de l'étudiant (0-20):</label>
-                <input type="number" class="form-control" id="note" name="note" min="0" max="20" required>
+                <input type="number" class="form-control" id="note" name="note" min="0" max="20" step="0.25" required>
             </div>
 
             <button type="submit" class="btn btn-primary">Saisir la note</button>
@@ -107,6 +107,7 @@
                 <tr>
                     <th>Nom de l'étudiant</th>
                     <th>Note</th>
+                    <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
                 </tr>
             </thead>
             <tbody>

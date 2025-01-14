@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EMS Gestion des Examens - Inscription</title>
-    <!-- Bootstrap CSS from local directory -->
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <style>
         body {
@@ -33,21 +33,23 @@
     <div class="card">
         <h2 class="text-center">Inscription</h2>
 
-    <!-- Display Success Messages -->
-    <?php if (session()->getFlashdata('success')): ?>
-        <div style="color: green;">
-            <p><?= esc(session()->getFlashdata('success')) ?></p>
-        </div>
-    <?php endif; ?>
+        <!-- Affichage des notifications de succès -->
+        <?php if (session()->getFlashdata('success')): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= esc(session()->getFlashdata('success')) ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
 
         <!-- Affichage des erreurs -->
         <?php if (session()->getFlashdata('errors')): ?>
-            <div class="alert alert-danger">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <ul>
                     <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                        <li><?php echo($error) ?></li>
+                        <li><?= esc($error) ?></li>
                     <?php endforeach; ?>
                 </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
 
@@ -120,6 +122,7 @@
                            placeholder="CIN">
                 </div>
             </div>
+
             <button type="submit" class="btn btn-primary w-100 mb-3">S'inscrire</button>
         </form>
 
@@ -142,6 +145,5 @@
             });
         });
     </script>
-
 </body>
 </html>
