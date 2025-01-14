@@ -10,11 +10,10 @@ class SectorController extends BaseController
     {
         // Initialize the model
         $sectorModel = new \App\Models\SectorModel();
+		
+		$data['sectors'] = $sectorModel->getSectorByUser(session()->get('user_id'));
 
-        // Fetch both 'nom' (name) and 'description' from the 'sectors' table
-        $data['sectors'] = $sectorModel->select('id, nom, description')->findAll();
 
-        // Pass data to the view
         return view('sectors', $data);
     }
 }

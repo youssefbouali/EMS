@@ -4,69 +4,71 @@ namespace App\Controllers;
 
 use App\Models\NoteModel;
 use App\Models\UserModuleModel;
+use App\Models\ModuleModel;
 
 class NoteController extends BaseController
 {
-    public function noteForm()
-    {
-        // Load the note creation view
-        //return view('note');
-    }
+    public function AddNotes()
+	{
+		header("Access-Control-Allow-Origin: *");
+		header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+		header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-    public function AddNote()
-    {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+		if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+			header("HTTP/1.1 200 OK");
+			exit(0);
+		}
 
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            header("HTTP/1.1 200 OK");
-            exit(0);
-        }
+		// Instantiate the NoteModel
+		$noteModel = new NoteModel();
+		$UserModuleModel = new UserModuleModel();
 
-        // Instantiate the NoteModel
-        $noteModel = new NoteModel();
-        $UserModuleModel = new UserModuleModel();
+		// Decode the incoming JSON
+		$data = json_decode($this->request->getBody(), true);
 
-        // Validate the request
-        $validation = \Config\Services::validation();
-        $validation->setRules($noteModel->getValidationRules());
+		// Ensure 'notes' is set in the incoming data
+		$notes = isset($data['notes']) ? $data['notes'] : [];
 
-        if (!$validation->withRequest($this->request)->run()) {
-            // Return validation errors
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-        }
+		// Check if there are notes to process
+		if (empty($notes)) {
+			return "No notes found in the request!";
+		}
 
-        // Get POST data
-        $data = $this->request->getPost();
-		
-        $usermodule = $UserModuleModel->where('idUser', session()->get('user_id'))->first();
-		
-		//if($usermodule["type"] == "professor"){
-
-			// Insert the note
+		// Save each note record
+		foreach ($notes as $note) {
+			// Add 'idUserProfessor' to each note's data
+			if (intval($note['noteNormal']) >= 10 || intval($note['noteRattrapage']) >= 10) {
+				$valide = 1;
+			} else {
+				
+				$valide = 0;
+			}
 			$noteData = [
-				'session' => $data['session'],
-				'description' => $data['description'] ?? null,
-				'noteNormal' => $data['noteNormal'],
-				'noteRattrapage' => $data['noteRattrapage'],
-				'idModule' => $data['idModule'],
-				'idUserProfessor' => session()->get('user_id'),
-				'idUserStudent' => $data['idUserStudent'],
+				'valide' => $valide,
+				'noteNormal' => $note['noteNormal'],
+				'noteRattrapage' => $note['noteRattrapage'],
+				'idModule' => $note['idModule'],
+				'idUserProfessor' => session()->get('user_id'), // Professor's ID from session
+				'idUserStudent' => $note['idUserStudent'],
 			];
-			$noteObject = $noteModel->setobject($noteData);
-			$noteId = $noteModel->add();
-		//}
 
-        if ($noteId) {
-            // Redirect with success message
-            //return redirect()->to('/notes')->with('success', 'Note created successfully!');
-            return redirect()->to('/')->with('success', 'Note created successfully!');
-        } else {
-            // Redirect with error message
-            return redirect()->back()->with('error', 'Failed to create note')->withInput();
-        }
-    }
+			$NoteById = $noteModel->getNoteById($note['idUserStudent'], $note['idModule'], $note['noteNormal'], $note['noteRattrapage']);
+			
+			if(!isset($NoteById)){
+			
+				$noteModel->archiveOldNote($note['idUserStudent'], $note['idModule']);
+				
+				// Insert the note into the database
+				$noteModel->setobject($noteData);
+				$noteModel->add(); // Or the appropriate method for inserting data
+			}
+		}
+
+		// Return a response
+		return json_encode(['status' => 'success']);
+		exit;
+	}
+
 
     public function notes($id)
     {
@@ -76,10 +78,20 @@ class NoteController extends BaseController
         // Fetch all notes
         //$notes = $noteModel->findAll();
 		if(session()->get('role')=="professor"){
-			$data['notes'] = $noteModel->where('idUserProfessor', session()->get('user_id'))->where('idModule', $id)->findAll();
+			
+			$data['notes'] = $noteModel->getNotesByProfessor(session()->get('user_id'), $id);
+			
 		} elseif(session()->get('role')=="student"){
-			$data['notes'] = $noteModel->where('idUserStudent', session()->get('user_id'))->where('idModule', $id)->findAll();
+			
+			$data['notes'] = $noteModel->getNotesByStudent(session()->get('user_id'), $id);
 		}
+		
+		
+		$ModuleModel = new ModuleModel();
+		$getModuleById = $ModuleModel->getModuleById($id);
+		$data['nom'] = $getModuleById["nom"];
+		
+		$data['id'] = $id;
 
         // Load the notes view with the data
         return view('notes', $data);
@@ -101,62 +113,100 @@ class NoteController extends BaseController
     //    return view('edit_note_form', ['note' => $note]);
     //}
 
-    public function updateNote()
+    //public function updateNote()
+    //{
+    //    header("Access-Control-Allow-Origin: *");
+    //    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+    //    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+	//
+    //    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    //        header("HTTP/1.1 200 OK");
+    //        exit(0);
+    //    }
+	//
+    //    // Instantiate the NoteModel
+    //    $noteModel = new NoteModel();
+	//
+    //    // Validate the request
+    //    $validation = \Config\Services::validation();
+    //    $validation->setRules($noteModel->getValidationRules());
+	//
+    //    if (!$validation->withRequest($this->request)->run()) {
+    //        // Return validation errors
+    //        return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+    //    }
+	//
+    //    // Get POST data
+    //    $data = $this->request->getPost();
+	//
+    //    // Update the note
+    //    $updated = $noteModel->update($data['id'], [
+    //        'session' => $data['session'],
+    //        //'description' => $data['description'] ?? null,
+    //        'noteNormal' => $data['noteNormal'],
+    //        'noteRattrapage' => $data['noteRattrapage'],
+    //        'IdModule' => $data['IdModule'],
+    //        'IdUserProfessor' => $data['IdUserProfessor'],
+    //        'IdUserStudent' => $data['IdUserStudent'],
+    //    ]);
+	//
+    //    if ($updated) {
+    //        // Redirect with success message
+    //        return redirect()->to('/notes')->with('success', 'Note updated successfully!');
+    //    } else {
+    //        // Redirect with error message
+    //        return redirect()->back()->with('error', 'Failed to update note')->withInput();
+    //    }
+    //}
+	//
+    //public function deleteNote($id)
+    //{
+    //    // Instantiate the NoteModel
+    //    $noteModel = new NoteModel();
+	//
+    //    // Delete the note by ID
+    //    if ($noteModel->delete($id)) {
+    //        return redirect()->to('/notes')->with('success', 'Note deleted successfully!');
+    //    } else {
+    //        return redirect()->back()->with('error', 'Failed to delete note');
+    //    }
+    //}
+	
+	
+	
+	
+	
+	
+	
+    public function index()
     {
-        header("Access-Control-Allow-Origin: *");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-
-        if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-            header("HTTP/1.1 200 OK");
-            exit(0);
-        }
-
-        // Instantiate the NoteModel
-        $noteModel = new NoteModel();
-
-        // Validate the request
-        $validation = \Config\Services::validation();
-        $validation->setRules($noteModel->getValidationRules());
-
-        if (!$validation->withRequest($this->request)->run()) {
-            // Return validation errors
-            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-        }
-
-        // Get POST data
-        $data = $this->request->getPost();
-
-        // Update the note
-        $updated = $noteModel->update($data['id'], [
-            'session' => $data['session'],
-            'description' => $data['description'] ?? null,
-            'noteNormal' => $data['noteNormal'],
-            'noteRattrapage' => $data['noteRattrapage'],
-            'IdModule' => $data['IdModule'],
-            'IdUserProfessor' => $data['IdUserProfessor'],
-            'IdUserStudent' => $data['IdUserStudent'],
-        ]);
-
-        if ($updated) {
-            // Redirect with success message
-            return redirect()->to('/notes')->with('success', 'Note updated successfully!');
-        } else {
-            // Redirect with error message
-            return redirect()->back()->with('error', 'Failed to update note')->withInput();
-        }
+        
+		return view('saisir_notes'); // Vue avec le formulaire et la liste des notes
     }
 
-    public function deleteNote($id)
+    public function saisirNote()
     {
-        // Instantiate the NoteModel
-        $noteModel = new NoteModel();
+        $notesModel = new NoteModel();
+        $userModel = new UserModel();
 
-        // Delete the note by ID
-        if ($noteModel->delete($id)) {
-            return redirect()->to('/notes')->with('success', 'Note deleted successfully!');
+        $idUserStudent = $this->request->getPost('idUserStudent');
+        $noteNormal = $this->request->getPost('noteNormal');
+
+        // Vérifier si l'étudiant existe avec le idUserStudent
+        $etudiant = $userModel->where('idUserStudent', $idUserStudent)->first(); // Vérification dans la table 'user'
+
+        if ($etudiant) {
+            // Si l'étudiant existe, enregistrer la note
+            $data = [
+                'idUserStudent' => $idUserStudent,
+                'noteNormal' => $noteNormal
+            ];
+
+            $notesModel->insert($data);
+            return redirect()->to('/notes')->with('success', 'noteNormal saisie avec succès!');
         } else {
-            return redirect()->back()->with('error', 'Failed to delete note');
+            // Si l'étudiant n'existe pas, rediriger avec un message d'erreur
+            return redirect()->back()->with('error', "L'étudiant {$nom} n'existe pas.");
         }
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Models\UserModuleModel;
 
 class NoteModel extends Model
 {
@@ -12,7 +13,7 @@ class NoteModel extends Model
     protected $returnType = 'array';
 
    
-    protected $allowedFields = ['session', 'description', 'noteNormal', 'noteRattrapage', 'IdModule', 'IdUserProfessor', 'IdUserStudent'];
+    protected $allowedFields = ['valide', /*'description',*/ 'noteNormal', 'noteRattrapage', 'idModule', 'idUserProfessor', 'idUserStudent', 'archive'];
 
     
     protected $useTimestamps = true;
@@ -21,25 +22,16 @@ class NoteModel extends Model
 
     
     protected $validationRules = [
-        'session' => 'required|string|min_length[3]|max_length[100]|in_list[normal,rattrapage]',
-        'description' => 'permit_empty|string|max_length[191]',
-        'noteNormal' => 'required|numeric|greater_than_equal_to[0]|less_than_equal_to[20]',
-        'noteRattrapage' => 'required|numeric|greater_than_equal_to[0]|less_than_equal_to[20]',
+        #'session' => 'required|strin
     ];
 
     // Messages de validation personnalisés
     protected $validationMessages = [
-        'session' => [
-            'required' => 'Le nom de la filière est obligatoire.',
-            'min_length' => 'Le nom de la filière doit contenir au moins 3 caractères.',
-            'max_length' => 'Le nom de la filière ne peut pas dépasser 100 caractères.',
-        ],
-        'description' => [
-            'max_length' => 'La description ne peut pas dépasser 191 caractères.',
-        ],
-        'value' => [
-            'required' => 'La note est obligatoire.',
-        ],
+        #'session' => [
+        #    'required' => 'Le nom de la filière est obligatoire.',
+        #    'min_length' => 'Le nom de la filière doit contenir au moins 3 caractères.',
+        #    'max_length' => 'Le nom de la filière ne peut pas dépasser 100 caractères.',
+        #],
     ];
 	
 
@@ -66,10 +58,59 @@ class NoteModel extends Model
         return $this->insert($this->data);
     }
 	
+	
+	public function getNotesByProfessor($idUser, $idModule) {
+		$UserModuleModel = new UserModuleModel();
 
-    public function getNotesByStudent($idUser) {
-        return $this->where('idUser', $idUser)->findAll();
+		// Start with the 'usermodule' table
+		$profile = $this->db->table('usermodule');
+
+		// Perform LEFT JOIN with 'note' table
+		$profile->join('note', 'note.idUserStudent = usermodule.idUser AND note.idModule = usermodule.idModule AND note.idUserProfessor = ' . $idUser, 'left'); 
+
+		// Perform LEFT JOIN with 'user' table
+		$profile->join('user', 'user.id = usermodule.idUser', 'left');
+
+		// Add condition for the module and type
+		$profile->where('usermodule.type', "student");
+		$profile->where('usermodule.idModule', $idModule);
+		$profile->where('note.archive', null);
+		
+		$profile->select('usermodule.idUser AS idUserStudent, usermodule.idModule AS idModule, 
+                      note.id AS noteId, note.noteNormal, note.noteRattrapage, note.valide, 
+                      user.prenom, user.nom, user.cne');
+
+
+		// Execute and return the results
+		return $profile->get()->getResultArray();
+	}
+
+
+
+
+    public function getNotesByStudent($idUser, $idModule) {
+		$profile = $this->db->table($this->table); 
+        $profile->join('user', 'note.idUserStudent = user.id');
+        $profile->where('note.idUserStudent', $idUser);
+        $profile->where('note.idModule', $idModule);
+		$profile->where('note.archive', null);
+
+		return $profile->get()->getResultArray(); // Execute and return as array
     }
+	
+	public function getNoteById($idUser, $idModule, $noteNormal, $noteRattrapage) {
+		
+        return $this->where(['idUserStudent' => $idUser, 'idModule' => $idModule, 'noteNormal' => $noteNormal, 'noteRattrapage' => $noteRattrapage])->first();
+
+	}
+
+    public function archiveOldNote($idUser, $idModule) {
+		
+        return $this->where(['idUserStudent' => $idUser, 'idModule' => $idModule])
+                    ->set(['archive' => 1])
+                    ->update();
+
+	}
 
 
     public function getNotesByModule($idModule) {

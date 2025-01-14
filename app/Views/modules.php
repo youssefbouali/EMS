@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="/sectors">Saisie des notes</a></li>
+                        <li><a class="dropdown-item" href="/sectors">Les filières</a></li>
                     </ul>
                 </li>
             </ul>
@@ -35,10 +35,10 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">EMS Dashboard</a>
-                    <form class="d-flex">
+                    <!--form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    </form>
+                    </form-->
                     <a href="#" class="nav-link">
                         <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
                     </a>
@@ -64,11 +64,11 @@
                 <?php endif; ?>
 
                 <!-- Content -->
-                <h2 class="text-center">Choisissez un module</h2>
+                <h2 class="text-center">Choisissez un module : <?= esc($nom) ?></h2>
                 <div class="row row-cols-1 row-cols-md-3 g-4">
                     <?php foreach ($modules as $module): ?>
 						<div class="col">
-							<a href="<?= site_url('/notes/' . $module['id']) ?>" class="text-decoration-none">
+							<a href="<?= site_url('/notes/' . $module['idModule']) ?>" class="text-decoration-none">
 								<div class="card">
 									<div class="card-body">
 										<h5 class="card-title font-weight-bold "><?= esc($module['nom']) ?></h5>
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script>

@@ -34,10 +34,10 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">EMS Dashboard</a>
-                    <form class="d-flex">
+                    <!--form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    </form>
+                    </form-->
                     <a href="#" class="nav-link">
                         <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
                     </a>
@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -36,4 +36,27 @@ class SectorModel extends Model
             'max_length' => 'La description ne peut pas dépasser 255 caractères.',
         ],
     ];
+
+
+    public function getSectorByUser($idUser) {
+		$sectors = $this->db->table($this->table);
+    
+		$sectors->join('module', 'sector.id = module.idSector');
+		
+		$sectors->join('usermodule', 'module.id = usermodule.idModule');
+		
+		$sectors->where('usermodule.idUser', $idUser);
+		//$sectors->where('usermodule.type', 'professor');  // Uncomment if needed
+		
+		$sectors->select('sector.id, sector.nom, sector.description');
+
+		return $sectors->get()->getResultArray();
+    }
+	
+	
+	
+	public function getSectorById($idSector) {
+		
+        return $this->where('id', $idSector)->first();
+    }
 }

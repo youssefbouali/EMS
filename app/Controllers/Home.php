@@ -10,7 +10,7 @@ class Home extends BaseController
         if (session()->get('role')=="professor") {
             return view('dashboardProfessor');
 			
-        }elseif (session()->get('role')=="student") {
+        } elseif (session()->get('role')=="student") {
             return view('dashboardStudent');
         }
         return view('register');

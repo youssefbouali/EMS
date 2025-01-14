@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Modul extends Migration
+class CreateModuleTable extends Migration
 {
     public function up()
     {
@@ -25,7 +25,7 @@ class Modul extends Migration
                 'constraint' => '255',
                 'null'       => true,
             ],
-            'sector_id' => [
+            'idSector' => [
                 'type'       => 'INT',
                 'constraint' => 11,
                 'unsigned'   => true,
@@ -44,15 +44,15 @@ class Modul extends Migration
         $this->forge->addPrimaryKey('id');
 
         // Adding the foreign key constraint
-        $this->forge->addForeignKey('sector_id', 'sector', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('idSector', 'sector', 'id', 'CASCADE', 'CASCADE');
 
-        $this->forge->createTable('modul');
+        $this->forge->createTable('module');
     }
 
     public function down()
     {
         // Dropping the foreign key constraint before dropping the table
-        $this->forge->dropForeignKey('modul', 'modul_filiere_id_foreign');
-        $this->forge->dropTable('modul');
+        $this->forge->dropForeignKey('module', 'module_filiere_id_foreign');
+        $this->forge->dropTable('module');
     }
 }

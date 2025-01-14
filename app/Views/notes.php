@@ -22,7 +22,7 @@
                         Gestion des notes
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="/sectors">Saisie des notes</a></li>
+                        <li><a class="dropdown-item" href="/sectors">Les filières</a></li>
                     </ul>
                 </li>
             </ul>
@@ -35,10 +35,10 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">EMS Dashboard</a>
-                    <form class="d-flex">
+                    <!--form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Rechercher" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    </form>
+                    </form-->
                     <a href="#" class="nav-link">
                         <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
                     </a>
@@ -65,33 +65,50 @@
 
                 <!-- Content -->
         <div class="container-fluid p-4">
-            <h2 class="text-center">Les notes</h2>
+            <h2 class="text-center">Les notes : <?= esc($nom) ?></h2>
 
             <!-- Table -->
-            <form action="/submit-notes" method="post">
+            <form action="/notes/1" method="post" id="notesForm">
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>Identifient</th>
                             <th>CNE</th>
                             <th>Nom de l'Étudiant</th>
-                            <th>Note</th>
+                            <th>Note Normal</th>
+                            <th>Note Rattrapage</th>
+                            <th>Valide</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($notes as $note): ?>
                             <tr>
-                                <td><?= esc($note['session']) ?></td>
-                                <td>Étudiant <?= esc($note['idUserStudent']) ?></td>
+                                <td><?= esc($note['idUserStudent']) ?></td>
+                                <td><?= esc($note['cne']) ?></td>
+                                <td><?= esc($note['prenom']) ?> <?= esc($note['nom']) ?></td>
                                 <td>
-								<?= esc($note['session']) ?> <?= esc($note['description']) ?>
-                                    <input type="number" name="notes[<?= esc($note['session']) ?>]" class="form-control" min="0" max="20" value="0" required>
+                                    <input type="number" name="note_[<?= esc($note['idModule']) ?>,<?= esc($note['idUserStudent']) ?>,normal]" class="form-control" min="0" max="20" value="<?= esc($note['noteNormal']) ?>" required>
                                 </td>
+                                <td>
+                                    <input type="number" name="note_[<?= esc($note['idModule']) ?>,<?= esc($note['idUserStudent']) ?>,rattrapage]" class="form-control" min="0" max="20" value="<?= esc($note['noteRattrapage']) ?>" required>
+                                </td>
+                                <td><?= esc($note['valide']) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+				
+            <?php if (session()->get('role')=="professor"): ?>
                 <button type="submit" class="btn btn-primary">Confirmer la saisie</button>
+            <?php endif; ?>
             </form>
+<?php if (session()->get('role')=="professor"): ?>
+	<input type="file" id="my_file_input" />
+	<br />
+	<div id='my_file_output'></div>
+	<a href="/assets/notes.xlsx">Download xlsx for Notes</a>
+<?php endif; ?>
+
 
             <!-- Flash Messages -->
             <?php if (session()->getFlashdata('success')): ?>
@@ -106,16 +123,141 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+	<script src="/assets/js/xlsx.full.min.js"></script>
+
 
     <script>
         // Function to handle content change when a note card is clicked
-        function changeContent(noteId) {
+        /*function changeContent(noteId) {
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML = contentDiv.innerHTML = '<form action="/notes" method="post">Session: <select name="session" required><option value="normal">Normal</option><option value="rattrapage">Rattrapage</option></select> Note Normal: <input type="number" name="noteNormal" min="0" max="20" required> Note Rattrapage: <input type="number" name="noteRattrapage" min="0" max="20" required> ID Étudiant: <input type="text" name="idUserStudent" required> ID note: <input type="text" name="idnote" required> description: <input type="text" name="description" required> <button type="submit">Ajouter les Notes</button></form>';
-        }
-    </script>
+        }*/
+		
+		
+		var oFileIn;
+
+	document.addEventListener('DOMContentLoaded', function() {
+		oFileIn = document.getElementById('my_file_input');
+		if (oFileIn.addEventListener) {
+			oFileIn.addEventListener('change', filePicked, false);
+		}
+	});
+
+	function filePicked(oEvent) {
+		// Get The File From The Input
+		var oFile = oEvent.target.files[0];
+		var sFilename = oFile.name;
+
+		// Create A File Reader HTML5
+		var reader = new FileReader();
+
+		// Ready The Event For When A File Gets Selected
+		reader.onload = function(e) {
+			var data = e.target.result;
+
+			// Use XLSX.read instead of XLS.parse_xlscfb
+			var wb = XLSX.read(data, { type: 'binary' });
+
+			// Loop Over Each Sheet
+			wb.SheetNames.forEach(function(sheetName) {
+				// Obtain The Current Row As CSV
+				var sCSV = XLSX.utils.make_csv(wb.Sheets[sheetName]);   
+				var oJS = XLSX.utils.sheet_to_row_object_array(wb.Sheets[sheetName]);   
+
+				// Display CSV data
+				
+				//document.getElementById("my_file_output").innerHTML = sCSV;
+				oJS.forEach(row => {
+					// Find the corresponding input fields based on idModule and idUserStudent
+					const inputNormal = document.querySelector(`input[name="note_[${row.idModule},${row.idUserStudent},normal]"]`);
+					const inputRattrapage = document.querySelector(`input[name="note_[${row.idModule},${row.idUserStudent},rattrapage]"]`);
+
+					// If inputs exist, update their values
+					if (inputNormal) {
+						inputNormal.value = row.noteNormal;
+					}
+					if (inputRattrapage) {
+						inputRattrapage.value = row.noteRattrapage;
+					}
+				});
+				console.log(oJS);
+			});
+		};
+
+		// Tell JS To Start Reading The File
+		reader.readAsBinaryString(oFile);
+	}
+
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('notesForm');
+    if (form) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const formData = new FormData(event.target);
+            const notes = {};
+
+            // Process each input to build the structured JSON
+            for (const [key, value] of formData.entries()) {
+                const match = key.match(/^note_\[(\d+),(\d+),(\w+)\]$/);
+                if (match) {
+                    const id_module = match[1];
+                    const id_student = match[2];
+                    const type_note = match[3];
+
+                    // Create a unique key for each student/module combination
+                    const uniqueKey = `${id_module}_${id_student}`;
+
+                    if (!notes[uniqueKey]) {
+                        notes[uniqueKey] = {
+                            idModule: id_module,
+                            idUserStudent: id_student,
+                            noteNormal: null,
+                            noteRattrapage: null
+                        };
+                    }
+
+                    // Assign the value to the correct note type
+                    if (type_note === 'normal') {
+                        notes[uniqueKey].noteNormal = value;
+                    } else if (type_note === 'rattrapage') {
+                        notes[uniqueKey].noteRattrapage = value;
+                    }
+                }
+            }
+
+            // Convert the notes object to an array of values
+            const notesArray = Object.values(notes);
+
+            // Send the JSON to the server
+            fetch('/notes/<?= esc($id) ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ notes: notesArray }),
+            })
+                //.then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('Notes submitted successfully!');
+					window.location.reload();  // Reload the page to reflect changes
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while submitting the notes.');
+                });
+        });
+    }
+});
+
+</script>
 </body>
 
 </html>
