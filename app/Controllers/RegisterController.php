@@ -75,13 +75,29 @@ class RegisterController extends BaseController
 
         // Insérer les données dans la base
         try {
-            $userId = $userModel->insert($userData);
-            $accountData['idUser'] = $userId;
-            $accountId = $accountModel->insert($accountData);
+            //$userId = $userModel->insert($userData);
+            //$accountData['idUser'] = $userId;
+            //$accountId = $accountModel->insert($accountData);
+			//
+            //$roleData['idAccount'] = $accountId;
+            //$roleData['user_id'] = $userId;
+            //$roleId = $roleModel->insert($roleData);
+			
+			// Create the user
+        $userObject = $userModel->setobject($userData);
+        $userId = $userModel->add();
 
-            $roleData['idAccount'] = $accountId;
-            $roleData['user_id'] = $userId;
-            $roleId = $roleModel->insert($roleData);
+		$accountData["idUser"] = $userId;
+        $accountObject = $accountModel->setobject($accountData);
+        $accountId = $accountModel->add();
+        //$accountId = $accountModel->insert($accountData);
+
+
+		$roleData["idAccount"] = $accountId;
+        // Create the role
+        //$roleId = $roleModel->insert($roleData);
+        $roleObject = $roleModel->setobject($roleData);
+        $roleId = $roleModel->add();
 
             if ($userId && $accountId && $roleId) {
                 return redirect()->to('/login')->with('success', 'Registration successful! Please log in.');

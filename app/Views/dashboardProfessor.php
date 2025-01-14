@@ -20,7 +20,7 @@
 
         .main-content {
             margin-left: 250px;
-            padding-top: 20px;
+            /*padding-top: 20px;*/
         }
 
         .navbar {
