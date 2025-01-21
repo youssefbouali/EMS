@@ -1,5 +1,10 @@
 # EMS : Application de Gestion des Examens
 
+<div align="center">
+  <img width="200" src="images/img.jpg" alt="EMS" />
+</div>
+
+
 Cette application est conçue pour faciliter la gestion des examens dans un environnement académique. Elle offre des fonctionnalités essentielles permettant aux enseignants, étudiants et administrateurs de gérer efficacement le processus des examens.
 
 ## Fonctionnalités Principales
