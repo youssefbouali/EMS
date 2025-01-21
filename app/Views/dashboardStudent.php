@@ -1,125 +1,132 @@
 <!DOCTYPE html>
-<html lang="fr">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EMS Gestion des Examens - Dashboard</title>
-    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <title>Dashboard Étudiant</title>
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Custom Styles */
-        .sidebar {
-            width: 250px;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            background-color: #343a40;
-            padding-top: 20px;
+        body {
+            background-color: #f8f9fa;
         }
-
-        .main-content {
-            margin-left: 250px;
-            /*padding-top: 20px;*/
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: hsla(214, 12.70%, 89.20%, 0.87);
+            color: white;
         }
-
-        .navbar {
-            z-index: 1050;
-        }
-
-        .card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .card:hover {
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-title {
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
             font-weight: bold;
+            border-radius: 50%;
         }
-
-        .card-body {
-            padding: 1.5rem;
+        .card {
+            margin-top: 20px;
+            max-width: 1000px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
         }
-
-        .btn-logout {
-            margin-top: auto;
+        .field-label {
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-bottom: 0.05rem;
         }
-
-        /* Media Query for small screens */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                height: auto;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
+        .info-background {
+            padding: 3px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+        }
+        .row {
+            margin-bottom: 0rem;
+        }
+        .modern-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .modern-title::before {
+            content: "";
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background-color: #007bff;
+            bottom: 0;
+            left: 25%;
+            transition: all 0.3s ease;
+        }
+        .modern-title:hover::before {
+            width: 100%;
+            left: 0;
         }
     </style>
 </head>
-
 <body>
-    <div class="d-flex">
-        <!-- Sidebar -->
-        <nav class="navbar navbar-dark bg-dark sidebar flex-column p-3">
-            <a class="navbar-brand mb-4" href="#">EMS Dashboard</a>
-            <ul class="navbar-nav flex-column w-100">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">🏠 Dashboard</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="gestionNotesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        📚 Gestion des notes
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="gestionNotesDropdown">
-                        <li><a class="dropdown-item" href="<?= site_url('/sectors') ?>">Saisie des notes</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <a href="/logout" class="btn btn-danger mt-auto">Logout</a>
-        </nav>
-        <!-- Main Content -->
-        <div class="flex-grow-1 main-content">
-            <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light w-100" style="z-index: 1050;">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">EMS Dashboard</a>
-                    <a href="#" class="nav-link">
-                        <img src="<?= base_url('assets/images/profil.png') ?>" alt="Profile" style="width:30px;">
-                    </a>
+    <!-- En-tête avec logo et bouton de déconnexion -->
+    <div class="header">
+        <div class="logo">EMS</div>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="container">
+        <div class="card">
+            <h4 class="modern-title">Informations Étudiant</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="field-label">Nom :</p>
+                    <div class="info-background">
+                        <p id="student-nom"><?= esc($user['nom']) ?></p>
+                    </div>
                 </div>
-            </nav>
-
-            <!-- Main Content -->
-            <div class="container-fluid p-4">
-                <h2 class="text-center">Welcome to The dashboard Student</h2>
-                
-                <!-- Success and Error Flash Messages -->
-                <?php if (session()->getFlashdata('success')): ?>
-                    <div class="alert alert-success">
-                        <p><?= esc(session()->getFlashdata('success')) ?></p>
+                <div class="col-md-6">
+                    <p class="field-label">CNE :</p>
+                    <div class="info-background">
+                        <p id="student-cne"><?= esc($user['cne']) ?></p>
                     </div>
-                <?php endif; ?>
-
-                <?php if (session()->getFlashdata('errors')): ?>
-                    <div class="alert alert-danger">
-                        <ul>
-                            <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                                <li><?php esc($error) ?></li>
-                            <?php endforeach; ?>
-                        </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="field-label">Prénom :</p>
+                    <div class="info-background">
+                        <p id="student-prenom"><?= esc($user['prenom']) ?></p>
                     </div>
-                <?php endif; ?>
+                </div>
+                <div class="col-md-6">
+                    <p class="field-label">Filière :</p>
+                    <div class="info-background">
+                        <p id="student-filiere"><?= esc($sector['nom']) ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="field-label">Date de Naissance :</p>
+                    <div class="info-background">
+                        <p id="student-dob"><?= esc($user['dateNaissance']) ?></p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="/assets/js/popper.min.js"></script>
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

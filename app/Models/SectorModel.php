@@ -52,6 +52,26 @@ class SectorModel extends Model
 
 		return $sectors->get()->getResultArray();
     }
+
+
+    public function getSectorByStudent($idUser) {
+		// Build the query
+		$query = $this->db->table($this->table)
+			->join('module', 'sector.id = module.idSector')
+			->join('usermodule', 'module.id = usermodule.idModule')
+			->where('usermodule.idUser', $idUser)
+			// Uncomment if filtering by type is needed
+			// ->where('usermodule.type', 'professor')
+			->select('sector.id, sector.nom, sector.description')
+			->get();
+
+		// Fetch the result as an array
+		$sectors = $query->getResultArray();
+
+		// Return the first record or an empty string if none found
+		return isset($sectors[0]) ? $sectors[0] : [];
+	}
+
 	
 	
 	

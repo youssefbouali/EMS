@@ -1,4 +1,9 @@
-    # Application de Gestion des Examens
+# EMS : Application de Gestion des Examens
+
+<div align="center">
+  <img width="200" src="images/img.jpg" alt="EMS" />
+</div>
+
 
 Cette application est conçue pour faciliter la gestion des examens dans un environnement académique. Elle offre des fonctionnalités essentielles permettant aux enseignants, étudiants et administrateurs de gérer efficacement le processus des examens.
 
@@ -79,21 +84,76 @@ classDiagram
         +int id
         +string nom
         +string prenom
-        +iscription()
+        +string cne
+        +string cni
+        +string dateNaissance
+        +inscription()
     }
 
     class Account {
         +int id
         +string email
         +string password
+        +add()
+        +login()
+        +updateAccount()
+        +deleteAccount()
+        +getAccountByEmail()
     }
 
     class Role {
-        <<enumeration>>
-        +Etudiant
-        +Prof
+        +int id
+        +string role_name
+        +add()
+        +get()
     }
 
+    class Note {
+        +int id
+        +float noteNormal
+        +float noteRattrapage
+        +bool valide
+        +int idUserProfessor
+        +int idUserStudent
+        +archiveOldNote()
+        +getNotesByProfessor()
+        +getNotesByStudent()
+        +getNoteById()
+    }
+
+    class Module {
+        +int id
+        +string nom
+        +string description
+        +int idSector
+        +getModulesBySectorUser()
+        +getModuleById()
+    }
+    class Sector {
+        +int id
+        +string nom
+        +string description
+        +getSectorByUser()
+        +getSectorById()
+    }
+
+    %% Relations
     User --> Account : "possède un"
-    User --> Role : "a un rôle"
+    Account --> Role : "a un rôle"
+    User --> Note : "soumet"
+    Note --> Module : "appartient à"
+    Module --> Sector : "fait partie de"
+    
+    %% Rôle spécifique
+    User : +string cne (visible si rôle = "Etudiant")
+    User : +string cni (visible si rôle = "Prof")
+    User : +string dateNaissance (visible si rôle = "Etudiant")
+
+    %% Cardinalités
+    User "1" --> "1" Account : "possède un"
+    Account "1" --> "1" Role : "a un rôle"
+    User "1" --> "0..*" Note : "soumet"
+    Note "0..*" --> "1" Module : "appartient à"
+    Module "1..*" --> "1" Sector : "fait partie de"
+
 e3453189555336c55cc72cc6564294ab1765e588
