@@ -79,7 +79,6 @@ classDiagram
         +int id
         +string nom
         +string prenom
-        +string role
         +string cne
         +string cni
         +string dateNaissance
@@ -90,37 +89,47 @@ classDiagram
         +int id
         +string email
         +string password
+        +add()
+        +login()
+        +updateAccount()
+        +deleteAccount()
+        +getAccountByEmail()
     }
 
     class Role {
-        +Etudiant
-        +Prof
+        +int id
+        +string role_name
+        +add()
+        +get()
     }
 
     class Note {
         +int id
-        +float valeur
-        +string commentaire
-        +creerNote()
-        +modifierNote()
-        +supprimerNote()
+        +float noteNormal
+        +float noteRattrapage
+        +bool valide
+        +int idUserProfessor
+        +int idUserStudent
+        +archiveOldNote()
+        +getNotesByProfessor()
+        +getNotesByStudent()
+        +getNoteById()
     }
 
     class Module {
         +int id
         +string nom
-        +ajouterModule()
-        +modifierModule()
-        +supprimerModule()
+        +string description
+        +int idSector
+        +getModulesBySectorUser()
+        +getModuleById()
     }
-
     class Sector {
         +int id
         +string nom
         +string description
-        +ajouterSector()
-        +modifierSector()
-        +supprimerSector()
+        +getSectorByUser()
+        +getSectorById()
     }
 
     %% Relations
