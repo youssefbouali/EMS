@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Étudiant</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -81,7 +81,7 @@
     <!-- En-tête avec logo et bouton de déconnexion -->
     <div class="header">
         <div class="logo">EMS</div>
-        <button class="btn btn-danger">Logout</button>
+        <a href="/logout" class="btn btn-danger">Logout</a>
     </div>
 
     <!-- Contenu principal -->
@@ -92,13 +92,13 @@
                 <div class="col-md-6">
                     <p class="field-label">Nom :</p>
                     <div class="info-background">
-                        <p id="student-nom">Ahmed</p>
+                        <p id="student-nom"><?= esc($user['nom']) ?></p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <p class="field-label">CNE :</p>
                     <div class="info-background">
-                        <p id="student-cne">CNE123456</p>
+                        <p id="student-cne"><?= esc($user['cne']) ?></p>
                     </div>
                 </div>
             </div>
@@ -106,13 +106,13 @@
                 <div class="col-md-6">
                     <p class="field-label">Prénom :</p>
                     <div class="info-background">
-                        <p id="student-prenom">Ali</p>
+                        <p id="student-prenom"><?= esc($user['prenom']) ?></p>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <p class="field-label">Filière :</p>
                     <div class="info-background">
-                        <p id="student-filiere">Informatique</p>
+                        <p id="student-filiere"><?= esc($sector['nom']) ?></p>
                     </div>
                 </div>
             </div>
@@ -120,13 +120,13 @@
                 <div class="col-md-12">
                     <p class="field-label">Date de Naissance :</p>
                     <div class="info-background">
-                        <p id="student-dob">15/01/1999</p>
+                        <p id="student-dob"><?= esc($user['dateNaissance']) ?></p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -97,7 +97,7 @@ class UserModel extends Model
 	
     public function getUserById($idUser)
     {
-        return $this->where('idUser', $idUser)->first();
+        return $this->where('id', $idUser)->first();
     }
 	
     public function getUserByEmail(string $email): ?array
