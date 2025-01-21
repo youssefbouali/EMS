@@ -28,7 +28,7 @@ class Database extends Config
         'DSN'      => '',
         'hostname' => 'localhost',
         'username' => 'root', // Utilisateur de la base de données
-        'password' => 'root', // Mot de passe de l'utilisateur
+        'password' => '', // Mot de passe de l'utilisateur
         'database' => 'ems', // Nom de la base de données
         'DBDriver' => 'MySQLi',
         'DBPrefix' => '',

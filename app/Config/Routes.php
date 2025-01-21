@@ -28,3 +28,4 @@ $routes->post('/notes/(:num)', 'NoteController::AddNotes/$1');
 
 $routes->get('/notes/saisirNote', 'NoteController::index'); // Soumettre la note
 $routes->post('/notes/saisirNote', 'NoteController::saisirNote'); // Soumettre la note
+$routes->get('/dashboard', 'DashboardController::index');
