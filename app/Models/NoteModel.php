@@ -108,7 +108,7 @@ class NoteModel extends Model
     {
         // Assuming 'notes' table has columns like 'idUserStudent', 'idModule', 'noteNormal', 'noteRattrapage', 'valide'
         $query = $this->db->table('note')
-                          ->join('modules', 'module.id = note.idModule')
+                          ->join('module', 'module.id = note.idModule')
                           ->where('note.idUserStudent', $studentId)
                           ->get();
 
@@ -116,11 +116,11 @@ class NoteModel extends Model
     }
 
 	
-	/*public function getNoteById($idUser, $idModule, $noteNormal, $noteRattrapage) {
+	public function getNoteById($idUser, $idModule, $noteNormal, $noteRattrapage) {
 		
         return $this->where(['idUserStudent' => $idUser, 'idModule' => $idModule, 'noteNormal' => $noteNormal, 'noteRattrapage' => $noteRattrapage])->first();
 
-	}*/
+	}
 
     public function archiveOldNote($idUser, $idModule) {
 		
@@ -141,7 +141,7 @@ class NoteModel extends Model
     }
 
 
-    public function getNotesForLoggedStudent($studentId)
+    /*public function getNotesForLoggedStudent($studentId)
     {
         // Query to get the student's grades along with module names
         return $this->db->table('note')
@@ -150,7 +150,7 @@ class NoteModel extends Model
             ->where('note.idUserStudent', $studentId)
             ->get()
             ->getResult(); // or getResult() if using CodeIgniter 4
-    }
+    }*/
 
     public function getErrors()
     {

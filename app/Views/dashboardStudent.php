@@ -94,7 +94,7 @@
 <body>
     <!-- En-tête avec logo et bouton de déconnexion -->
     <div class="header">
-    <img src="https://seeklogo.com/images/U/uiz-ibn-zohr-logo-9C971C192C-seeklogo.com.png"
+    <img src="/assets/images/uiz.png"
      alt="Université Ibno Zohr"
      class="header-logo"
      width="150" height="auto">
@@ -159,7 +159,7 @@
                             <!-- Loop through each grade and display in a table row -->
                             <?php foreach ($grades as $grade) : ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($grade['moduleName']) ?></td>
+                                    <td><?= htmlspecialchars($grade['nom']) ?></td>
                                     <td><?= htmlspecialchars($grade['noteNormal']) ?></td>
                                     <td><?= htmlspecialchars($grade['noteRattrapage']) ?></td>
                                     <td><?= $grade['valide'] ? 'Oui' : 'Non' ?></td>
