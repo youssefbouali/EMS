@@ -209,4 +209,22 @@ class NoteController extends BaseController
             return redirect()->back()->with('error', "L'étudiant {$nom} n'existe pas.");
         }
     }
+
+    public function getLoggedStudentGrades() {
+        
+        $studentId = session()->get('user_id');
+        
+        if (!$studentId) {
+            return redirect()->to('/login'); // Redirect to login page if no user is logged in
+        }
+    
+        // Create an instance of the NoteModel
+        $noteModel = new \App\Models\NoteModel();
+        
+        // Fetch the grades and module names for the logged-in student
+        $grades = $noteModel->getNotesForLoggedStudent($studentId);
+    
+        // Pass the data to the view
+        return view('student_grades', ['grades' => $grades]);
+    }
 }
