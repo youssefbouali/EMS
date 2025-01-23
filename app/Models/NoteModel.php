@@ -87,7 +87,7 @@ class NoteModel extends Model
 
 
 
-    public function getNotesForLoggedStudent($idUser) {
+    /*public function getNotesForLoggedStudent($idUser) {
         
         $profile = $this->db->table($this->table);
         
@@ -101,23 +101,26 @@ class NoteModel extends Model
         $profile->select('module.name AS moduleName, note.noteNormal, note.noteRattrapage, note.valide, user.prenom, user.nom');
     
         return $profile->get()->getResultArray();
+    }*/
+
+
+    public function getNotesForStudent($studentId)
+    {
+        // Assuming 'notes' table has columns like 'idUserStudent', 'idModule', 'noteNormal', 'noteRattrapage', 'valide'
+        $query = $this->db->table('note')
+                          ->join('modules', 'module.id = note.idModule')
+                          ->where('note.idUserStudent', $studentId)
+                          ->get();
+
+        return $query->getResultArray();
     }
 
-    public function getNotesByStudent($idUser, $idModule) {
-		$profile = $this->db->table($this->table); 
-        $profile->join('user', 'note.idUserStudent = user.id');
-        $profile->where('note.idUserStudent', $idUser);
-        $profile->where('note.idModule', $idModule);
-		$profile->where('note.archive', null);
-
-		return $profile->get()->getResultArray(); // Execute and return as array
-    }
 	
-	public function getNoteById($idUser, $idModule, $noteNormal, $noteRattrapage) {
+	/*public function getNoteById($idUser, $idModule, $noteNormal, $noteRattrapage) {
 		
         return $this->where(['idUserStudent' => $idUser, 'idModule' => $idModule, 'noteNormal' => $noteNormal, 'noteRattrapage' => $noteRattrapage])->first();
 
-	}
+	}*/
 
     public function archiveOldNote($idUser, $idModule) {
 		
@@ -136,7 +139,19 @@ class NoteModel extends Model
     public function getNoteByStudentModule($idUser, $idModule){
         return $this->where(['idUser' => $idUser, 'idModule' => $idModule])->findAll();
     }
-	
+
+
+    public function getNotesForLoggedStudent($studentId)
+    {
+        // Query to get the student's grades along with module names
+        return $this->db->table('note')
+            ->select('note.idModule, module.nom AS moduleName, note.noteNormal, note.noteRattrapage, note.valide')
+            ->join('module', 'module.id = note.idModule')
+            ->where('note.idUserStudent', $studentId)
+            ->get()
+            ->getResult(); // or getResult() if using CodeIgniter 4
+    }
+
     public function getErrors()
     {
         return $this->errors();

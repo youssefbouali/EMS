@@ -97,86 +97,6 @@ class NoteController extends BaseController
         return view('notes', $data);
     }
 
-    //public function editNoteForm($id)
-    //{
-    //    // Instantiate the NoteModel
-    //    $noteModel = new NoteModel();
-	//
-    //    // Fetch the note by ID
-    //    $note = $noteModel->find($id);
-	//
-    //    if (!$note) {
-    //        throw new \CodeIgniter\Exceptions\PageNotFoundException("Note not found");
-    //    }
-	//
-    //    // Load the edit note view with the data
-    //    return view('edit_note_form', ['note' => $note]);
-    //}
-
-    //public function updateNote()
-    //{
-    //    header("Access-Control-Allow-Origin: *");
-    //    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-    //    header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-	//
-    //    if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    //        header("HTTP/1.1 200 OK");
-    //        exit(0);
-    //    }
-	//
-    //    // Instantiate the NoteModel
-    //    $noteModel = new NoteModel();
-	//
-    //    // Validate the request
-    //    $validation = \Config\Services::validation();
-    //    $validation->setRules($noteModel->getValidationRules());
-	//
-    //    if (!$validation->withRequest($this->request)->run()) {
-    //        // Return validation errors
-    //        return redirect()->back()->withInput()->with('errors', $validation->getErrors());
-    //    }
-	//
-    //    // Get POST data
-    //    $data = $this->request->getPost();
-	//
-    //    // Update the note
-    //    $updated = $noteModel->update($data['id'], [
-    //        'session' => $data['session'],
-    //        //'description' => $data['description'] ?? null,
-    //        'noteNormal' => $data['noteNormal'],
-    //        'noteRattrapage' => $data['noteRattrapage'],
-    //        'IdModule' => $data['IdModule'],
-    //        'IdUserProfessor' => $data['IdUserProfessor'],
-    //        'IdUserStudent' => $data['IdUserStudent'],
-    //    ]);
-	//
-    //    if ($updated) {
-    //        // Redirect with success message
-    //        return redirect()->to('/notes')->with('success', 'Note updated successfully!');
-    //    } else {
-    //        // Redirect with error message
-    //        return redirect()->back()->with('error', 'Failed to update note')->withInput();
-    //    }
-    //}
-	//
-    //public function deleteNote($id)
-    //{
-    //    // Instantiate the NoteModel
-    //    $noteModel = new NoteModel();
-	//
-    //    // Delete the note by ID
-    //    if ($noteModel->delete($id)) {
-    //        return redirect()->to('/notes')->with('success', 'Note deleted successfully!');
-    //    } else {
-    //        return redirect()->back()->with('error', 'Failed to delete note');
-    //    }
-    //}
-	
-	
-	
-	
-	
-	
 	
     public function index()
     {
@@ -210,21 +130,31 @@ class NoteController extends BaseController
         }
     }
 
-    public function getLoggedStudentGrades() {
-        
-        $studentId = session()->get('user_id');
-        
-        if (!$studentId) {
-            return redirect()->to('/login'); // Redirect to login page if no user is logged in
-        }
-    
-        // Create an instance of the NoteModel
-        $noteModel = new \App\Models\NoteModel();
-        
-        // Fetch the grades and module names for the logged-in student
-        $grades = $noteModel->getNotesForLoggedStudent($studentId);
-    
-        // Pass the data to the view
-        return view('student_grades', ['grades' => $grades]);
-    }
+
+     public function getLoggedStudentGrades() {
+         $studentId = session()->get('user_id');
+
+         if (!$studentId) {
+             return redirect()->to('/login'); // Redirect if no student is logged in
+         }
+
+         // Load the necessary models
+         $userModel = new \App\Models\UserModel();
+         $noteModel = new \App\Models\NoteModel();
+         $sectorModel = new \App\Models\SectorModel();
+
+         // Get student data
+         $user = $userModel->find($studentId); // Assuming the student data is retrieved by their ID
+         $sector = $sectorModel->find($user['sector_id']); // Adjust according to your database schema
+
+         // Get student grades
+         $grades = $noteModel->getNotesForStudent($studentId);
+
+         // Pass data to the view
+         return view('dashboardStudent', ['user' => $user, 'sector' => $sector, 'grades' => $grades]);
+     }
+
+
+
+
 }

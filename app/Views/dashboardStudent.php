@@ -142,6 +142,38 @@
                 </div>
             </div>
         </div>
+    <div class="card">
+        <h4 class="modern-title mb-4">Modules et Notes</h4>
+        <div class="table-responsive">
+             <?php if (!empty($grades)) : ?>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Nom du Module</th>
+                                <th>Note Normale</th>
+                                <th>Note de Rattrapage</th>
+                                <th>Valide</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop through each grade and display in a table row -->
+                            <?php foreach ($grades as $grade) : ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($grade['moduleName']) ?></td>
+                                    <td><?= htmlspecialchars($grade['noteNormal']) ?></td>
+                                    <td><?= htmlspecialchars($grade['noteRattrapage']) ?></td>
+                                    <td><?= $grade['valide'] ? 'Oui' : 'Non' ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else : ?>
+                    <p>Aucune note trouvée.</p> <!-- Display message if no grades are found -->
+                <?php endif; ?>
+        </div>
+    </div>
+
+
     </div>
 
     <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
