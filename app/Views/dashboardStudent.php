@@ -177,6 +177,8 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+					<div>General grade : <?= htmlspecialchars($general_grade) ?></div>
+
                 <?php else : ?>
                     <p>Aucune note trouvée.</p> <!-- Display message if no grades are found -->
                 <?php endif; ?>
