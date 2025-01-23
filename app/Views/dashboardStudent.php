@@ -88,6 +88,16 @@
         width: 100%;
         left: 0;
     }
+	
+	
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .table-responsive, .header, .header .header-logo, .infos *, .table-responsive * {
+        visibility: visible;
+      }
+    }
 </style>
 
 </head>
@@ -103,7 +113,7 @@
 
     <!-- Contenu principal -->
     <div class="container">
-        <div class="card">
+        <div class="card infos">
             <h4 class="modern-title mb-4">Informations Étudiant</h4>
             <div class="row">
                 <div class="col-md-6">
@@ -171,6 +181,7 @@
                     <p>Aucune note trouvée.</p> <!-- Display message if no grades are found -->
                 <?php endif; ?>
         </div>
+		<button class="btn btn-primary mt-3" onclick="window.print()">Print Resultats</button>
     </div>
 
 
