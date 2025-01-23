@@ -87,6 +87,21 @@ class NoteModel extends Model
 
 
 
+    public function getNotesForLoggedStudent($idUser) {
+        
+        $profile = $this->db->table($this->table);
+        
+        $profile->join('user', 'note.idUserStudent = user.id');
+        
+        $profile->join('module', 'note.idModule = module.id'); 
+        
+        $profile->where('note.idUserStudent', $idUser);
+        $profile->where('note.archive', null);
+    
+        $profile->select('module.name AS moduleName, note.noteNormal, note.noteRattrapage, note.valide, user.prenom, user.nom');
+    
+        return $profile->get()->getResultArray();
+    }
 
     public function getNotesByStudent($idUser, $idModule) {
 		$profile = $this->db->table($this->table); 
