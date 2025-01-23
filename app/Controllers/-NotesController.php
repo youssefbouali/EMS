@@ -9,6 +9,8 @@ class NotesController extends BaseController
 {
     public function index()
     {
+        $notesModel = new NoteModel();
+        $userModel = new UserModel();
         
 		if(session()->get('role')=="professor"){
 			$data['notes'] = $noteModel->where('idUserProfessor', session()->get('user_id'))->where('idModule', $id)->findAll();

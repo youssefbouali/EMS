@@ -5,7 +5,8 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+$routes->get('/', 'DashboardController::index');
+#$routes->get('/dashboard', 'DashboardController::index');
 
 $routes->get('/register', 'RegisterController::RegisterForm');
 $routes->post('/register', 'RegisterController::register');
