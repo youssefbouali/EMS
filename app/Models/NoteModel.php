@@ -110,6 +110,7 @@ class NoteModel extends Model
         $query = $this->db->table('note')
                           ->join('module', 'module.id = note.idModule')
                           ->where('note.idUserStudent', $studentId)
+						  ->where('note.archive', null)
                           ->get();
 
         return $query->getResultArray();

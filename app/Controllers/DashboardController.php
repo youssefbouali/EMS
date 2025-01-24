@@ -25,6 +25,27 @@ class DashboardController extends BaseController
 			$data['user'] = $UserModel->getUserById(session()->get('user_id'));
 			$data['sector'] = $SectorModel->getSectorByStudent(session()->get('user_id'));
 			$data['grades'] = $NoteModel->getNotesForStudent(session()->get('user_id'));
+			
+			
+			// Initialize variables
+			$totalNotemax = 0;
+			$moduleCount = count($data['grades']);
+
+			if ($moduleCount > 0) {
+				foreach ($data['grades'] as &$grade) {
+					// Calculate the maximum grade for the module
+					$grade['notemax'] = max($grade['noteNormal'], $grade['noteRattrapage']);
+
+					// Add the maximum grade to the total
+					$totalNotemax += $grade['notemax'];
+				}
+
+				// Calculate the general grade
+				$data['general_grade'] = $totalNotemax / $moduleCount;
+			} else {
+				$data['general_grade'] = 0; // Default to 0 if no grades are found
+			}
+			
 			if(!isset($data['sector']["nom"])){
 				$data['sector']["nom"] = "";
 			}
