@@ -104,7 +104,12 @@ CREATE TABLE IF NOT EXISTS `module` (
 
 INSERT INTO `module` (`id`, `nom`, `description`, `idSector`, `created_at`, `updated_at`) VALUES
 (1, 'GL Avancée', 'GL Avancée', 1, NULL, NULL),
-(2, 'Python', 'Python', 1, NULL, NULL);
+(2, 'Python', 'Python', 1, NULL, NULL),
+(3, 'Design Thinkig', 'DT', 1, NULL, NULL),
+(4, 'Mathématiques', 'math', 1, NULL, NULL),
+(5, 'Recherche opérationnelle et optimisation', 'ro', 1, NULL, NULL),
+(6, 'Langues étrangeres', 'LE', 1, NULL, NULL),
+(7, 'SoftSkills', 'SS', 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -132,9 +137,15 @@ CREATE TABLE IF NOT EXISTS `note` (
 --
 
 INSERT INTO `note` (`id`, `idModule`, `idUserProfessor`, `idUserStudent`, `noteNormal`, `noteRattrapage`, `valide`, `archive`, `created_at`, `updated_at`) VALUES
-(14, 1, 1, 2, 10.00, 20.00, 1, NULL, '2025-01-14 04:55:07', '2025-01-14 04:55:07'),
-(13, 1, 1, 3, 3.00, 4.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:54:48'),
-(12, 1, 1, 2, 1.00, 2.00, 0, 1, '2025-01-14 04:54:48', '2025-01-14 04:55:07');
+(1, 1, 1, 3, 10.00, 20.00, 1, NULL, '2025-01-14 04:55:07', '2025-01-14 04:55:07'),
+(2, 2, 1, 3, 3.00, 4.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:54:48'),
+(3, 3, 1, 3, 1.00, 2.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:55:07'),
+(4, 4, 1, 3, 1.00, 2.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:55:07'),
+(5, 5, 1, 3, 1.00, 2.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:55:07'),
+(6, 6, 1, 3, 1.00, 2.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:55:07'),
+(7, 7, 1, 3, 1.00, 2.00, 0, NULL, '2025-01-14 04:54:48', '2025-01-14 04:55:07');
+
+
 
 -- --------------------------------------------------------
 
@@ -240,10 +251,19 @@ CREATE TABLE IF NOT EXISTS `usermodule` (
 
 INSERT INTO `usermodule` (`id`, `idUser`, `idModule`, `type`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 'professor', NULL, NULL),
-(2, 2, 1, 'student', NULL, NULL),
+(2, 3, 1, 'student', NULL, NULL),
 (3, 3, 1, 'student', NULL, NULL),
-(4, 4, 2, 'professor', NULL, NULL);
-COMMIT;
+(4, 4, 2, 'professor', NULL, NULL),
+(5, 3, 2, 'student', NULL, NULL),
+(6, 3, 3, 'student', NULL, NULL),
+(7, 3, 4, 'student', NULL, NULL),
+(8, 3, 5, 'student', NULL, NULL),
+(9, 3, 6, 'student', NULL, NULL),
+(10, 3, 7, 'student', NULL, NULL)
+;
+
+
+    COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
