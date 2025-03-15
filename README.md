@@ -7,6 +7,13 @@
 
 Cette application est conçue pour faciliter la gestion des examens dans un environnement académique. Elle offre des fonctionnalités essentielles permettant aux enseignants, étudiants et administrateurs de gérer efficacement le processus des examens.
 
+<img width="960" alt="notes" src="https://github.com/user-attachments/assets/0b32c6fa-3920-47a3-bad7-ee7f97492b4f" />
+<img width="957" alt="filiere" src="https://github.com/user-attachments/assets/c702ab68-8f58-4016-9786-0c72df9b52fc" />
+<img width="959" alt="module" src="https://github.com/user-attachments/assets/34e5a4bd-1e01-4aea-b9bb-13d4adb3e650" />
+<img width="350" alt="inscription" src="https://github.com/user-attachments/assets/899a575a-8150-4c54-ba5c-76ef6f09a16e" />
+<img width="363" alt="connexion" src="https://github.com/user-attachments/assets/8c36ae7d-cff8-473b-ba8c-54d1c6b11901" />
+
+
 ## Fonctionnalités Principales
 
 - **Saisie des Notes** : Les enseignants peuvent enregistrer et modifier les notes des étudiants pour chaque examen.
